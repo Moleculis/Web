@@ -11,9 +11,15 @@ import Container from '@material-ui/core/Container';
 import formStyles from "../../styles/FormStyle";
 import {Link as RouterLink} from 'react-router-dom';
 import Routes from "../../Routes";
+import {useSelector} from "react-redux";
+import {StoreState} from "../../redux/Store";
+import {AuthState} from "../../redux/auth/AuthReducer";
 
 const SignIn: React.FC = () => {
     const classes = formStyles();
+    const authState:AuthState = useSelector((state:StoreState) => state.auth);
+
+    console.log(`AuthState.isLoading: ${authState.isLoading}`);
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
