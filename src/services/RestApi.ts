@@ -1,4 +1,9 @@
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
+
+export interface ErrorResponse{
+    status:number,
+    message:string
+}
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:8080',
@@ -11,12 +16,11 @@ axiosInstance.interceptors.request.use(config => {
 });
 
 axiosInstance.interceptors.response.use((response) => {
-        // TODO handle error responses
         return response;
     },
-    (error) => {
-        // TODO handle errors
-        return Promise.reject(error);
+    (error: AxiosError) : Promise<ErrorResponse> => {
+        const errorResponse: ErrorResponse = error.response?.data;
+        return Promise.reject(errorResponse);
     });
 
 axiosInstance.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';

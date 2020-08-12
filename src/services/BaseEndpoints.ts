@@ -1,4 +1,4 @@
-const usersEndpoint: string = "/users";
+const usersEndpoint: string = '/users';
 
 export {
     usersEndpoint
