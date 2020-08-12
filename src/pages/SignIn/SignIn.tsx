@@ -11,16 +11,19 @@ import Container from '@material-ui/core/Container';
 import formStyles from '../../styles/FormStyle';
 import {Link as RouterLink, useHistory} from 'react-router-dom';
 import Routes from '../../Routes';
-import {useDispatch, useSelector} from 'react-redux';
-import {StoreState} from '../../redux/Store';
-import {AuthState} from '../../redux/auth/AuthReducer';
+import {connect} from 'react-redux';
 import {logInAction} from '../../redux/auth/AuthActions';
+import {StoreState} from "../../redux/Store";
+import {AuthState} from "../../redux/auth/AuthReducer";
 
-const SignIn = () => {
+interface SignInProps {
+    isLoading: boolean,
+    isLoggedIn?: boolean,
+    logInAction: (username: string, password: string, isRememberMe: boolean) => void
+}
+
+const SignIn = ({isLoading, isLoggedIn, logInAction}: SignInProps) => {
     const classes = formStyles();
-    const authState: AuthState = useSelector((state: StoreState) => state.auth);
-
-    const dispatch = useDispatch();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -40,11 +43,11 @@ const SignIn = () => {
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(logInAction(username, password, isRememberMe));
+        logInAction(username, password, isRememberMe);
     }
     const history = useHistory();
     useEffect(() => {
-        if (authState.token) {
+        if (isLoggedIn) {
             history.push(Routes.home);
         }
     });
@@ -94,9 +97,9 @@ const SignIn = () => {
                         variant='contained'
                         color='primary'
                         className={classes.submit}
-                        disabled={authState.isLoading}
+                        disabled={isLoading}
                     >
-                        {authState.isLoading ? 'Loading...' : 'Sign In'}
+                        {isLoading ? 'Loading...' : 'Sign In'}
                     </Button>
                     <Grid container>
                         <Grid item xs>
@@ -116,4 +119,16 @@ const SignIn = () => {
     );
 }
 
-export default SignIn;
+const mapStateToProps = (state: StoreState) => {
+    const authState: AuthState = state.auth;
+    return {
+        isLoading: authState.isLoading,
+        isLoggedIn: authState.isLoggedIn
+    };
+}
+
+const mapDispatchToProps = {
+    logInAction: logInAction
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

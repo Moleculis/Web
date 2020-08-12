@@ -25,8 +25,7 @@ interface LogInRequest {
 }
 
 interface LogInSuccess {
-    type: typeof LOG_IN_SUCCESS,
-    token: string
+    type: typeof LOG_IN_SUCCESS
 }
 
 interface AuthFailure {
@@ -41,8 +40,8 @@ const logInRequest = (): AuthActionTypes => {
     return {type: LOG_IN_REQUEST};
 };
 
-const logInSuccess = (token: string): AuthActionTypes => {
-    return {type: LOG_IN_SUCCESS, token};
+const logInSuccess = (): AuthActionTypes => {
+    return {type: LOG_IN_SUCCESS};
 }
 
 const loggedOut = (): AuthActionTypes => {
@@ -59,7 +58,7 @@ const silentLogIn = (): ThunkAction<void, AuthState, unknown, any> => {
         dispatch(logInRequest());
         const token: string | null = getToken();
         if (token) {
-            dispatch(logInSuccess(token));
+            dispatch(logInSuccess());
         } else {
             dispatch(loggedOut());
         }
@@ -75,7 +74,7 @@ const logInAction = (username: string, password: string, isRememberMe: boolean)
             if (isRememberMe) {
                 setToken(token);
             }
-            dispatch(logInSuccess(token));
+            dispatch(logInSuccess());
         }).catch(error => {
             const errorMessage: string = error.message;
             dispatch(authFailure(errorMessage));

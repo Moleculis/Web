@@ -3,7 +3,6 @@ import {AUTH_FAILURE, AuthActionTypes, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOGGED_OU
 export interface AuthState {
     isLoading: boolean,
     isLoggedIn?: boolean,
-    token?: string,
     error?: string
 }
 
@@ -26,7 +25,6 @@ const authReducer = (state: AuthState = initialState, action: AuthActionTypes) =
             return {
                 ...state,
                 isLoading: false,
-                token: action.token,
                 isLoggedIn: true,
                 error: undefined
             };

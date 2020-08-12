@@ -1,28 +1,24 @@
 import React, {useEffect} from 'react';
-import {BrowserRouter as Router, Switch, Route, useHistory} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import SignIn from './pages/SignIn/SignIn';
 import SignUp from './pages/SignUp/SignUp';
-import Routes from './Routes';
+import Routes, {LoggedInRoute} from './Routes';
 import Home from "./pages/Home/Home";
-import {AuthState} from "./redux/auth/AuthReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {StoreState} from "./redux/Store";
+import {connect} from "react-redux";
 import {silentLogIn} from "./redux/auth/AuthActions";
+import {StoreState} from "./redux/Store";
 
-interface RouteProps {
-    exact?: boolean;
-    path: string;
-    component: React.ComponentType<any>;
+interface AppProps {
+    isLoggedIn?: boolean,
+    silentLogIn: () => void
 }
 
-const App: React.FC = () => {
-    const authState: AuthState = useSelector((state: StoreState) => state.auth);
-    const dispatch = useDispatch();
+const App = ({isLoggedIn, silentLogIn}: AppProps) => {
     useEffect(() => {
-        dispatch(silentLogIn());
-    }, [dispatch]);
+        silentLogIn();
+    }, [silentLogIn]);
 
-    const app = authState.isLoggedIn !== undefined ? (
+    const app = isLoggedIn !== undefined ? (
         <Router>
             <Switch>
                 <LoggedInRoute path={Routes.home} exact component={Home}/>
@@ -38,22 +34,13 @@ const App: React.FC = () => {
     );
 }
 
-const LoggedInRoute = ({component: Component, ...otherProps}: RouteProps) => {
-    const authState: AuthState = useSelector((state: StoreState) => state.auth);
-    const history = useHistory();
-    if (!authState.token) {
-        history.push(Routes.signIn);
-    }
-    return (
-        <>
-            <Route render={otherProps => (
-                <>
-                    <Component {...otherProps} />
-                </>
-            )}
-            />
-        </>
-    );
-};
+const mapStateToProps = (state: StoreState) => {
+    const authState = state.auth;
+    return {isLoggedIn: authState.isLoggedIn};
+}
 
-export default App;
+const mapDispatchToProps = {
+    silentLogIn: silentLogIn
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
