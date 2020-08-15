@@ -1,7 +1,7 @@
 import React from "react";
-import {AuthState} from "./redux/auth/AuthReducer";
+import {AuthState} from "../redux/auth/AuthReducer";
 import {useSelector} from "react-redux";
-import {StoreState} from "./redux/Store";
+import {StoreState} from "../redux/Store";
 import {Route, useHistory} from "react-router-dom";
 
 interface RouteProps {

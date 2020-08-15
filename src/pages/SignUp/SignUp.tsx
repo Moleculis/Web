@@ -10,10 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import formStyles from "../../styles/FormStyle";
 import {Link as RouterLink} from 'react-router-dom';
-import Routes from "../../Routes";
+import Routes from "../../utils/Routes";
 
 const SignUp: React.FC = () => {
-    let classes = formStyles();
+    const classes = formStyles();
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -21,7 +21,7 @@ const SignUp: React.FC = () => {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.formBig} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField

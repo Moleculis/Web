@@ -1,7 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
@@ -9,40 +8,72 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import formStyles from '../../styles/FormStyle';
-import {Link as RouterLink, useHistory} from 'react-router-dom';
-import Routes from '../../Routes';
+import {Link as RouterLink, useHistory, useLocation} from 'react-router-dom';
+import Routes from '../../utils/Routes';
 import {connect} from 'react-redux';
 import {logInAction} from '../../redux/auth/AuthActions';
 import {StoreState} from "../../redux/Store";
 import {AuthState} from "../../redux/auth/AuthReducer";
+import ProjectSnackbar from "../../components/ProjectSnackbar";
+import TextFormField from "../../components/Form/TextFormField";
+import Form from "../../components/Form/Form";
+import {checkPasswordValid, checkUsernameValid} from "../../utils/Validation";
 
 interface SignInProps {
     isLoading: boolean,
     isLoggedIn?: boolean,
-    logInAction: (username: string, password: string, isRememberMe: boolean) => void
+    logInAction: (username: string, password: string, isRememberMe: boolean) => void,
+}
+
+interface SignInLocationState {
+    message?: string
+}
+
+let message: string | undefined;
+
+interface SignInState {
+    isSnackbarOpen: boolean,
+    username: string,
+    password: string,
+    isRememberMe: boolean
 }
 
 const SignIn = ({isLoading, isLoggedIn, logInAction}: SignInProps) => {
     const classes = formStyles();
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [isRememberMe, setRememberMe] = useState(false);
-
-    const updateUsername = (e: ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
+    const location = useLocation();
+    const shackBarMessage: string | undefined = (location.state as SignInLocationState)?.message;
+    if (!message) {
+        message = shackBarMessage;
     }
 
-    const updatePassword = (e: ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
+    const [state, setState] = useState({
+        isSnackbarOpen: !!shackBarMessage,
+        username: '',
+        password: '',
+        isRememberMe: false,
+    } as SignInState);
+
+    const {isSnackbarOpen, username, password, isRememberMe} = state;
+
+    const handleSnackbarClose = () => {
+        setState({...state, isSnackbarOpen: false});
+        message = undefined;
+    }
+
+    const updateUsername = (value: string) => {
+        setState({...state, username: value});
+    }
+
+    const updatePassword = (value: string) => {
+        setState({...state, password: value});
     }
 
     const updateRememberMe = (e: ChangeEvent<{}>, checked: boolean) => {
-        setRememberMe(checked);
+        setState({...state, isRememberMe: checked});
     }
 
-    const onSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = () => {
         logInAction(username, password, isRememberMe);
     }
     const history = useHistory();
@@ -50,39 +81,36 @@ const SignIn = ({isLoading, isLoggedIn, logInAction}: SignInProps) => {
         if (isLoggedIn) {
             history.push(Routes.home);
         }
+        if (shackBarMessage) {
+            history.replace({});
+        }
     });
 
     return (
         <Container component='main' maxWidth='xs'>
+            <ProjectSnackbar open={isSnackbarOpen} message={message} severity={'success'}
+                             handleClose={handleSnackbarClose}/>
             <CssBaseline/>
             <div className={classes.paper}>
                 <Typography component='h1' variant='h5'>
                     Sign in
                 </Typography>
-                <form className={classes.form} noValidate onSubmit={onSubmit}>
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
+                <Form className={classes.form} onSubmit={onSubmit}>
+                    <TextFormField
                         required
-                        fullWidth
-                        id='username'
+                        autoFocus
                         label='Username'
-                        name='username'
+                        validation={checkUsernameValid}
                         value={username}
                         onChange={updateUsername}
-                        autoFocus
                     />
-                    <TextField
-                        variant='outlined'
-                        margin='normal'
+                    <TextFormField
                         required
-                        fullWidth
-                        name='password'
                         label='Password'
                         type='password'
-                        id='password'
                         value={password}
                         onChange={updatePassword}
+                        validation={checkPasswordValid}
                         autoComplete='current-password'
                     />
                     <FormControlLabel
@@ -113,7 +141,7 @@ const SignIn = ({isLoading, isLoggedIn, logInAction}: SignInProps) => {
                             </Link>
                         </Grid>
                     </Grid>
-                </form>
+                </Form>
             </div>
         </Container>
     );

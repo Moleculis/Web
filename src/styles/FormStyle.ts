@@ -11,6 +11,10 @@ const formStyles = makeStyles((theme) => ({
         width: '100%',
         marginTop: theme.spacing(1),
     },
+    formBig: {
+        width: '100%',
+        marginTop: theme.spacing(3),
+    },
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
