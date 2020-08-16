@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {BrowserRouter as Router, Switch} from "react-router-dom";
 import SignIn from "./SignIn/SignIn";
 import SignUp from "./SignUp/SignUp";
-import Routes, {LoggedInRoute} from "../utils/Routes";
+import Routes, {AuthRoute, LoggedInRoute} from "../utils/Routes";
 import Home from "./Home/Home";
 import {connect} from "react-redux";
 import {silentLogIn} from "../redux/auth/AuthActions";
@@ -23,8 +23,8 @@ const App = ({isLoggedIn, silentLogIn}: AppProps) => {
         <Router>
             <Switch>
                 <LoggedInRoute path={Routes.home} exact component={Home}/>
-                <Route path={Routes.signIn} component={SignIn}/>
-                <Route path={Routes.signUp} component={SignUp}/>
+                <AuthRoute path={Routes.signIn} component={SignIn}/>
+                <AuthRoute path={Routes.signUp} component={SignUp}/>
             </Switch>
         </Router>
     ) : null;

@@ -1,27 +1,15 @@
 import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import {uaFlagPath, usFlagPath} from "./utils/Assets";
 import {getLanguage, setLanguage} from "./services/Storage";
 import Language from "./utils/Language";
 import translationEn from "./assets/locales/en/translation.json";
 import translationUa from "./assets/locales/ua/translation.json";
+import {initReactI18next} from "react-i18next";
 
 const namespace: string = "translations";
 
-export const getLanguageAsset = (language: Language | string): string | undefined => {
-    switch (language) {
-        case Language.en:
-            return usFlagPath;
-        case Language.ua:
-            return uaFlagPath;
-        default:
-            return undefined;
-    }
-}
-
 const currentLanguage: Language = getLanguage();
 
-i18n.use(LanguageDetector).init({
+i18n.use(initReactI18next).init({
     resources: {
         en: {
             translations: translationEn
@@ -47,6 +35,8 @@ i18n.use(LanguageDetector).init({
         wait: true
     }
 });
+
+export const t = i18n.t.bind(i18n);
 
 export const changeLanguage = async (language: Language): Promise<void> => {
     await i18n.changeLanguage(language);

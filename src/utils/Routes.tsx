@@ -3,6 +3,7 @@ import {AuthState} from "../redux/auth/AuthReducer";
 import {useSelector} from "react-redux";
 import {StoreState} from "../redux/Store";
 import {Route, useHistory} from "react-router-dom";
+import LanguageDropdown from "../components/LanguageDropdown";
 
 interface RouteProps {
     exact?: boolean,
@@ -37,8 +38,22 @@ const LoggedInRoute = ({component: Component}: RouteProps) => {
     );
 };
 
+const AuthRoute = ({component: Component}: RouteProps) => {
+    return (
+        <>
+            <Route render={otherProps => (
+                <>
+                    <LanguageDropdown/>
+                    <Component {...otherProps} />
+                </>
+            )}/>
+        </>
+    );
+};
+
 export {
-    LoggedInRoute
+    LoggedInRoute,
+    AuthRoute
 }
 
 export default Routes;

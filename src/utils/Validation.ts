@@ -1,23 +1,25 @@
+import {t} from "../i18n";
+
 const usernameRegexp = new RegExp(String.raw`^[a-zA-Z0-9]+$`);
 // const emailRegexp = new RegExp(String.raw`^[a-zA-Z0-9.!#\\$%&’*+/=?^_\`{|}~-]+
 // @[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\$`);
 
 const checkUsernameValid = (value: string): string | undefined => {
     if (value.length < 4) {
-        return "Username is too short";
+        return t("username_short");
     }
     if (value.length > 30) {
-        return "Username is too long";
+        return t("username_long");
     }
     if (!usernameRegexp.test(value)) {
-        return "Wrong username";
+        return t("username_wrong");
     }
     return undefined;
 }
 
-const checkPasswordValid = (value:string): string | undefined => {
-    if(value.length < 8){
-        return "Password is too short"
+const checkPasswordValid = (value: string): string | undefined => {
+    if (value.length < 8) {
+        return t("password_short");
     }
     return undefined;
 }

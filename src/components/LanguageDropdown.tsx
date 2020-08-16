@@ -1,16 +1,21 @@
 import React from "react";
 import {createStyles, FormControl, MenuItem, Select, Theme} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {changeLanguage, getLanguageAsset} from "../i18n";
+import {changeLanguage} from "../i18n";
 import {getLanguage} from "../services/Storage";
-import Language from "../utils/Language";
+import Language, {getLanguageAsset, getLanguageName} from "../utils/Language";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         formControl: {
             position: "fixed",
             top: theme.spacing(1),
-            right: theme.spacing(1)
+            right: theme.spacing(1),
+        },
+        img: {
+            objectFit: "cover",
+            width: 30,
+            verticalAlign: "middle"
         },
     }),
 );
@@ -29,7 +34,7 @@ const LanguageDropdown = () => {
 
     return (
         <div>
-            <FormControl variant="outlined" className={classes.formControl}>
+            <FormControl variant="standard" className={classes.formControl}>
                 <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
@@ -38,7 +43,13 @@ const LanguageDropdown = () => {
                 >
                     {Object.keys(Language).map((language: string) => {
                         return (
-                            <MenuItem value={language}>{getLanguageAsset(language)}</MenuItem>
+                            <MenuItem key={language} value={language}>
+                                <img
+                                    className={classes.img}
+                                    src={getLanguageAsset(language)}
+                                    alt={getLanguageName(language)}
+                                />
+                            </MenuItem>
                         );
                     })}
                 </Select>

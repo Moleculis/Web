@@ -1,4 +1,5 @@
 import axios, {AxiosError} from "axios";
+import {getLanguage, getToken} from "./Storage";
 
 export interface ErrorResponse{
     status:number,
@@ -10,6 +11,11 @@ const axiosInstance = axios.create({
 })
 
 axiosInstance.interceptors.request.use(config => {
+    config.headers["Accept-Language"] = getLanguage();
+    const token: string | null = getToken();
+    if(token){
+        config.headers["Authorization"] = `Bearer ${token}`;
+    }
     return config;
 }, error => {
     return Promise.reject(error);

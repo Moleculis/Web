@@ -19,7 +19,6 @@ import {checkPasswordValid, checkUsernameValid} from "../../utils/Validation";
 import {SnackbarContext} from "../../components/SnackbarWrapper";
 import StoreListener from "../../redux/StoreListener";
 import SubmitButton from "../../components/SubmitButton";
-import LanguageDropdown from "../../components/LanguageDropdown";
 import {useTranslation} from "react-i18next";
 
 interface SignInProps {
@@ -90,7 +89,6 @@ const SignIn = ({isLoading, logInAction}: SignInProps) => {
                     }
                 }
             }>
-            <LanguageDropdown/>
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div className={classes.paper}>
@@ -101,14 +99,14 @@ const SignIn = ({isLoading, logInAction}: SignInProps) => {
                         <TextFormField
                             required
                             autoFocus
-                            label="Username"
+                            label={t("username")}
                             validation={checkUsernameValid}
                             value={username}
                             onChange={updateUsername}
                         />
                         <TextFormField
                             required
-                            label="Password"
+                            label={t("password")}
                             type="password"
                             value={password}
                             onChange={updatePassword}
@@ -117,7 +115,7 @@ const SignIn = ({isLoading, logInAction}: SignInProps) => {
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary"/>}
-                            label="Remember me"
+                            label={t("remember_me")}
                             checked={isRememberMe}
                             onChange={updateRememberMe}
                         />
@@ -128,12 +126,12 @@ const SignIn = ({isLoading, logInAction}: SignInProps) => {
                         <Grid container>
                             <Grid item xs>
                                 <Link variant="body2">
-                                    Forgot password?
+                                    {t("forgot_pass")}
                                 </Link>
                             </Grid>
                             <Grid item>
                                 <Link variant="body2" component={RouterLink} to={Routes.signUp}>
-                                    {"Don't have an account? Sign Up"}
+                                    {t("no_account")}
                                 </Link>
                             </Grid>
                         </Grid>
