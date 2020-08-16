@@ -19,6 +19,7 @@ import {checkPasswordValid, checkUsernameValid} from "../../utils/Validation";
 import {SnackbarContext} from "../../components/SnackbarWrapper";
 import StoreListener from "../../redux/StoreListener";
 import SubmitButton from "../../components/SubmitButton";
+import LanguageDropdown from "../../components/LanguageDropdown";
 
 interface SignInProps {
     isLoading: boolean,
@@ -86,6 +87,7 @@ const SignIn = ({isLoading, logInAction}: SignInProps) => {
                     }
                 }
             }>
+            <LanguageDropdown/>
             <Container component='main' maxWidth='xs'>
                 <CssBaseline/>
                 <div className={classes.paper}>
