@@ -1,4 +1,4 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux';
+import {createStore, combineReducers, applyMiddleware} from "redux";
 import authReducer, {AuthState} from "./auth/AuthReducer";
 import thunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension/index";

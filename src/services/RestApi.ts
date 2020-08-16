@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios';
+import axios, {AxiosError} from "axios";
 
 export interface ErrorResponse{
     status:number,
@@ -6,7 +6,7 @@ export interface ErrorResponse{
 }
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: "http://localhost:8080",
 })
 
 axiosInstance.interceptors.request.use(config => {
@@ -23,7 +23,7 @@ axiosInstance.interceptors.response.use((response) => {
         return Promise.reject(errorResponse);
     });
 
-axiosInstance.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
-axiosInstance.defaults.headers.common['accept'] = 'application/json';
+axiosInstance.defaults.headers.post["Content-Type"] = "application/json; charset=utf-8";
+axiosInstance.defaults.headers.common["accept"] = "application/json";
 
 export default axiosInstance;

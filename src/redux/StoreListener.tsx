@@ -1,8 +1,8 @@
-import React, {useContext} from 'react';
+import React, {useContext} from "react";
 import {Dispatcher, Mapper, observe, observer, Observer} from "redux-observers";
 import {Unsubscribe} from "redux-observers/types/redux";
 import {ReactReduxContext} from "react-redux";
-import {useHistory} from 'react-router-dom';
+import {useHistory} from "react-router-dom";
 
 interface StoreListenerProps<S, MS> {
     children: React.ReactNode,

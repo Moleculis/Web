@@ -1,4 +1,4 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useState} from "react";
 import ProjectSnackbar, {AlertSeverityType} from "./ProjectSnackbar";
 
 interface SnackbarWrapperProps {
@@ -51,7 +51,7 @@ const SnackbarWrapper = ({children}: SnackbarWrapperProps) => {
         }
     }
 
-    const openSnackBar = (message: string, severity: AlertSeverityType = 'success') => {
+    const openSnackBar = (message: string, severity: AlertSeverityType = "success") => {
         if (state.isSnackbarOpened) {
             addToDelayed({snackBarMessage: message, snackBarSeverity: severity});
         } else {

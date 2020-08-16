@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
 import {createStyles, FormControl, MenuItem, Select, Theme} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
+import {changeLanguage, getLanguageAsset} from "../i18n";
+import {getLanguage} from "../services/Storage";
+import Language from "../utils/Language";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         formControl: {
-            position: 'fixed',
+            position: "fixed",
             top: theme.spacing(1),
             right: theme.spacing(1)
         },
@@ -15,10 +18,13 @@ const useStyles = makeStyles((theme: Theme) =>
 const LanguageDropdown = () => {
     const classes = useStyles();
 
-    const [currentLanguage, setCurrentLanguage] = React.useState(0);
+    const [currentLanguage, setCurrentLanguage] = React.useState(getLanguage());
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setCurrentLanguage(event.target.value as number);
+        const language: Language = event.target.value as Language;
+        changeLanguage(language).then(() => {
+            setCurrentLanguage(language);
+        });
     };
 
     return (
@@ -30,8 +36,11 @@ const LanguageDropdown = () => {
                     value={currentLanguage}
                     onChange={handleChange}
                 >
-                    <MenuItem value={0}>English</MenuItem>
-                    <MenuItem value={1}>Українська</MenuItem>
+                    {Object.keys(Language).map((language: string) => {
+                        return (
+                            <MenuItem value={language}>{getLanguageAsset(language)}</MenuItem>
+                        );
+                    })}
                 </Select>
             </FormControl>
         </div>

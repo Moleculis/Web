@@ -1,16 +1,16 @@
-import React, {ChangeEvent, useContext, useEffect, useState} from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import formStyles from '../../styles/FormStyle';
-import {Link as RouterLink, useHistory, useLocation} from 'react-router-dom';
-import Routes from '../../utils/Routes';
-import {connect} from 'react-redux';
-import {logInAction} from '../../redux/auth/AuthActions';
+import React, {ChangeEvent, useContext, useEffect, useState} from "react";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import formStyles from "../../styles/FormStyle";
+import {Link as RouterLink, useHistory, useLocation} from "react-router-dom";
+import Routes from "../../utils/Routes";
+import {connect} from "react-redux";
+import {logInAction} from "../../redux/auth/AuthActions";
 import {StoreState} from "../../redux/Store";
 import {AuthState} from "../../redux/auth/AuthReducer";
 import TextFormField from "../../components/Form/TextFormField";
@@ -20,6 +20,7 @@ import {SnackbarContext} from "../../components/SnackbarWrapper";
 import StoreListener from "../../redux/StoreListener";
 import SubmitButton from "../../components/SubmitButton";
 import LanguageDropdown from "../../components/LanguageDropdown";
+import {useTranslation} from "react-i18next";
 
 interface SignInProps {
     isLoading: boolean,
@@ -39,12 +40,14 @@ interface SignInState {
 const SignIn = ({isLoading, logInAction}: SignInProps) => {
     const classes = formStyles();
 
+    const {t} = useTranslation();
+
     const location = useLocation();
     const snackbarMessage: string | undefined = (location.state as SignInLocationState)?.message;
 
     const [state, setState] = useState({
-        username: '',
-        password: '',
+        username: "",
+        password: "",
         isRememberMe: false,
     } as SignInState);
 
@@ -81,55 +84,55 @@ const SignIn = ({isLoading, logInAction}: SignInProps) => {
             listener={
                 (dispatch, currentState) => {
                     if (currentState.error) {
-                        openSnackBar(currentState.error, 'error');
+                        openSnackBar(currentState.error, "error");
                     } else if (currentState.isLoggedIn) {
                         history.push(Routes.home);
                     }
                 }
             }>
             <LanguageDropdown/>
-            <Container component='main' maxWidth='xs'>
+            <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div className={classes.paper}>
-                    <Typography component='h1' variant='h5'>
-                        Sign in
+                    <Typography component="h1" variant="h5">
+                        {t("sing_in")}
                     </Typography>
                     <Form className={classes.form} onSubmit={onSubmit}>
                         <TextFormField
                             required
                             autoFocus
-                            label='Username'
+                            label="Username"
                             validation={checkUsernameValid}
                             value={username}
                             onChange={updateUsername}
                         />
                         <TextFormField
                             required
-                            label='Password'
-                            type='password'
+                            label="Password"
+                            type="password"
                             value={password}
                             onChange={updatePassword}
                             validation={checkPasswordValid}
-                            autoComplete='current-password'
+                            autoComplete="current-password"
                         />
                         <FormControlLabel
-                            control={<Checkbox value='remember' color='primary'/>}
-                            label='Remember me'
+                            control={<Checkbox value="remember" color="primary"/>}
+                            label="Remember me"
                             checked={isRememberMe}
                             onChange={updateRememberMe}
                         />
                         <SubmitButton
                             disabled={isLoading}
-                            text='Sign In'
+                            text={t("sing_in")}
                         />
                         <Grid container>
                             <Grid item xs>
-                                <Link variant='body2'>
+                                <Link variant="body2">
                                     Forgot password?
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link variant='body2' component={RouterLink} to={Routes.signUp}>
+                                <Link variant="body2" component={RouterLink} to={Routes.signUp}>
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

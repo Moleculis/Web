@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import {Snackbar} from "@material-ui/core";
-import MuiAlert from '@material-ui/lab/Alert';
+import MuiAlert from "@material-ui/lab/Alert";
 
 interface SnackbarPosition {
-    vertical: 'top' | 'bottom',
-    horizontal: 'center' | 'left' | 'right'
+    vertical: "top" | "bottom",
+    horizontal: "center" | "left" | "right"
 }
 
-export type AlertSeverityType = 'error' | 'warning' | 'info' | 'success' | undefined
+export type AlertSeverityType = "error" | "warning" | "info" | "success" | undefined
 
 interface ProjectSnackbarProps {
     position?: SnackbarPosition,
@@ -23,8 +23,8 @@ const ProjectSnackbar = ({
                              handleClose,
                              severity,
                              position = {
-                                 vertical: 'top',
-                                 horizontal: 'center'
+                                 vertical: "top",
+                                 horizontal: "center"
                              },
                          }: ProjectSnackbarProps) => {
     return (
@@ -37,7 +37,7 @@ const ProjectSnackbar = ({
                 onClose={handleClose}
             >
                 <Alert severity={severity}>
-                    {message ? message : ''}
+                    {message ? message : ""}
                 </Alert>
             </Snackbar>
         </>
@@ -50,7 +50,7 @@ interface AlertProps {
 }
 
 const Alert = ({severity, children}: AlertProps) => {
-    return <MuiAlert elevation={6} variant='filled' severity={severity} children={children}/>;
+    return <MuiAlert elevation={6} variant="filled" severity={severity} children={children}/>;
 }
 
 export default ProjectSnackbar;

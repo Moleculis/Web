@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import SignIn from './SignIn/SignIn';
-import SignUp from './SignUp/SignUp';
-import Routes, {LoggedInRoute} from '../utils/Routes';
+import React, {useEffect} from "react";
+import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import SignIn from "./SignIn/SignIn";
+import SignUp from "./SignUp/SignUp";
+import Routes, {LoggedInRoute} from "../utils/Routes";
 import Home from "./Home/Home";
 import {connect} from "react-redux";
 import {silentLogIn} from "../redux/auth/AuthActions";
@@ -29,7 +29,7 @@ const App = ({isLoggedIn, silentLogIn}: AppProps) => {
         </Router>
     ) : null;
     return (
-        <div className='App'>
+        <div className="App">
             <SnackbarWrapper>
                 {app}
             </SnackbarWrapper>

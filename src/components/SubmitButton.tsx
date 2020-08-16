@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Button from "@material-ui/core/Button";
 import formStyles from "../styles/FormStyle";
 
@@ -12,14 +12,14 @@ const SubmitButton = ({disabled, text}: SubmitButtonProps) => {
     return (
         <>
             <Button
-                type='submit'
+                type="submit"
                 fullWidth
-                variant='contained'
-                color='primary'
+                variant="contained"
+                color="primary"
                 className={classes.submit}
                 disabled={disabled}
             >
-                {disabled ? 'Loading...' : text}
+                {disabled ? "Loading..." : text}
             </Button>
         </>
     );

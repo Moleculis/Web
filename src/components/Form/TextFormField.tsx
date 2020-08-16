@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import TextField from "@material-ui/core/TextField";
 import {ChangeEvent, Component} from "react";
 
@@ -9,7 +9,7 @@ interface TextFormFieldProps {
     onChange: (value: string) => void,
     validation?: (value: string) => string | undefined,
     autoFocus?: boolean,
-    type?: React.InputHTMLAttributes<unknown>['type'],
+    type?: React.InputHTMLAttributes<unknown>["type"],
     autoComplete?: string
 }
 
@@ -60,8 +60,8 @@ class TextFormField extends Component<TextFormFieldProps, TextFormFieldState> {
         return (
             <>
                 <TextField
-                    variant='outlined'
-                    margin='normal'
+                    variant="outlined"
+                    margin="normal"
                     required={required}
                     fullWidth
                     id={lowerCaseLabel}
