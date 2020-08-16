@@ -1,13 +1,9 @@
 import React, {useEffect} from "react";
-import {BrowserRouter as Router, Switch} from "react-router-dom";
-import SignIn from "./SignIn/SignIn";
-import SignUp from "./SignUp/SignUp";
-import Routes, {AuthRoute, LoggedInRoute} from "../utils/Routes";
-import Home from "./Home/Home";
 import {connect} from "react-redux";
-import {silentLogIn} from "../redux/auth/AuthActions";
-import {StoreState} from "../redux/Store";
-import SnackbarWrapper from "../components/SnackbarWrapper";
+import {silentLogIn} from "../../redux/auth/AuthActions";
+import {StoreState} from "../../redux/Store";
+import SnackbarWrapper from "../../components/Snackbar/SnackbarWrapper";
+import {Pages} from "./Routes";
 
 interface AppProps {
     isLoggedIn?: boolean,
@@ -20,13 +16,7 @@ const App = ({isLoggedIn, silentLogIn}: AppProps) => {
     }, [silentLogIn]);
 
     const app = isLoggedIn !== undefined ? (
-        <Router>
-            <Switch>
-                <LoggedInRoute path={Routes.home} exact component={Home}/>
-                <AuthRoute path={Routes.signIn} component={SignIn}/>
-                <AuthRoute path={Routes.signUp} component={SignUp}/>
-            </Switch>
-        </Router>
+        <Pages/>
     ) : null;
     return (
         <div className="App">

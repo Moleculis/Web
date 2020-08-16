@@ -1,9 +1,13 @@
 import React from "react";
-import {AuthState} from "../redux/auth/AuthReducer";
+import {AuthState} from "../../redux/auth/AuthReducer";
 import {useSelector} from "react-redux";
-import {StoreState} from "../redux/Store";
-import {Route, useHistory} from "react-router-dom";
-import LanguageDropdown from "../components/LanguageDropdown";
+import {StoreState} from "../../redux/Store";
+import {BrowserRouter as Router, Route, Switch, useHistory} from "react-router-dom";
+import LanguageDropdown from "../../components/LanguageDropdown";
+import Home from "../Home";
+import SignIn from "../SignIn";
+import SignUp from "../SignUp";
+import SendResetPass from "../SendResetPass";
 
 interface RouteProps {
     exact?: boolean,
@@ -14,12 +18,29 @@ interface RouteProps {
 const homeEndpoint = '/';
 const signInEndpoint = "/sign-in";
 const signUpEndpoint = "/sign-up";
+const sendResetPassEndpoint = "/send-reset-pass";
 
 const Routes = {
     home: homeEndpoint,
     signIn: signInEndpoint,
-    signUp: signUpEndpoint
+    signUp: signUpEndpoint,
+    sendResetPass: sendResetPassEndpoint
 };
+
+export const Pages = () => {
+    return (
+        <>
+            <Router>
+                <Switch>
+                    <LoggedInRoute path={Routes.home} exact component={Home}/>
+                    <AuthRoute path={Routes.signIn} component={SignIn}/>
+                    <AuthRoute path={Routes.signUp} component={SignUp}/>
+                    <AuthRoute path={Routes.sendResetPass} component={SendResetPass}/>
+                </Switch>
+            </Router>
+        </>
+    );
+}
 
 const LoggedInRoute = ({component: Component}: RouteProps) => {
     const authState: AuthState = useSelector((state: StoreState) => state.auth);
@@ -50,10 +71,5 @@ const AuthRoute = ({component: Component}: RouteProps) => {
         </>
     );
 };
-
-export {
-    LoggedInRoute,
-    AuthRoute
-}
 
 export default Routes;

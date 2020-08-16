@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import formStyles from "../styles/FormStyle";
+import {useTranslation} from "react-i18next";
 
 interface SubmitButtonProps {
     text: string,
@@ -9,6 +10,9 @@ interface SubmitButtonProps {
 
 const SubmitButton = ({disabled, text}: SubmitButtonProps) => {
     const classes = formStyles();
+
+    const {t} = useTranslation();
+
     return (
         <>
             <Button
@@ -19,7 +23,7 @@ const SubmitButton = ({disabled, text}: SubmitButtonProps) => {
                 className={classes.submit}
                 disabled={disabled}
             >
-                {disabled ? "Loading..." : text}
+                {disabled ? `${t("loading")}...` : text}
             </Button>
         </>
     );

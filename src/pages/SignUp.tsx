@@ -8,9 +8,9 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import formStyles from "../../styles/FormStyle";
+import formStyles from "../styles/FormStyle";
 import {Link as RouterLink} from "react-router-dom";
-import Routes from "../../utils/Routes";
+import Routes from "./Base/Routes";
 
 const SignUp: React.FC = () => {
     const classes = formStyles();

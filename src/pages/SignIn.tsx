@@ -2,24 +2,24 @@ import React, {ChangeEvent, useContext, useEffect, useState} from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import formStyles from "../../styles/FormStyle";
-import {Link as RouterLink, useHistory, useLocation} from "react-router-dom";
-import Routes from "../../utils/Routes";
+import formStyles from "../styles/FormStyle";
+import {useHistory, useLocation} from "react-router-dom";
+import Routes from "./Base/Routes";
 import {connect} from "react-redux";
-import {logInAction} from "../../redux/auth/AuthActions";
-import {StoreState} from "../../redux/Store";
-import {AuthState} from "../../redux/auth/AuthReducer";
-import TextFormField from "../../components/Form/TextFormField";
-import Form from "../../components/Form/Form";
-import {checkPasswordValid, checkUsernameValid} from "../../utils/Validation";
-import {SnackbarContext} from "../../components/SnackbarWrapper";
-import StoreListener from "../../redux/StoreListener";
-import SubmitButton from "../../components/SubmitButton";
+import {logInAction} from "../redux/auth/AuthActions";
+import {StoreState} from "../redux/Store";
+import {AuthState} from "../redux/auth/AuthReducer";
+import TextFormField from "../components/Form/TextFormField";
+import Form from "../components/Form/Form";
+import {checkPasswordValid, checkUsernameValid} from "../utils/Validation";
+import {SnackbarContext} from "../components/Snackbar/SnackbarWrapper";
+import StoreListener from "../redux/StoreListener";
+import SubmitButton from "../components/SubmitButton";
 import {useTranslation} from "react-i18next";
+import TextLink from "../components/TextLink";
 
 interface SignInProps {
     isLoading: boolean,
@@ -125,14 +125,10 @@ const SignIn = ({isLoading, logInAction}: SignInProps) => {
                         />
                         <Grid container>
                             <Grid item xs>
-                                <Link variant="body2">
-                                    {t("forgot_pass")}
-                                </Link>
+                                <TextLink to={Routes.sendResetPass} text={t("forgot_pass")}/>
                             </Grid>
                             <Grid item>
-                                <Link variant="body2" component={RouterLink} to={Routes.signUp}>
-                                    {t("no_account")}
-                                </Link>
+                                <TextLink to={Routes.signUp} text={t("no_account")}/>
                             </Grid>
                         </Grid>
                     </Form>

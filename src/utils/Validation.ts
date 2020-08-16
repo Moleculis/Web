@@ -1,8 +1,8 @@
 import {t} from "../i18n";
 
 const usernameRegexp = new RegExp(String.raw`^[a-zA-Z0-9]+$`);
-// const emailRegexp = new RegExp(String.raw`^[a-zA-Z0-9.!#\\$%&’*+/=?^_\`{|}~-]+
-// @[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\$`);
+const emailRegexp = new RegExp(String.raw`^[a-zA-Z0-9.!#\\$%&’*+/=?^_\`{|}~-]+
+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\$`);
 
 const checkUsernameValid = (value: string): string | undefined => {
     if (value.length < 4) {
@@ -24,6 +24,13 @@ const checkPasswordValid = (value: string): string | undefined => {
     return undefined;
 }
 
+const checkEmailValid = (value: string): string | undefined => {
+    if (!emailRegexp.test(value)) {
+        return t("wrong_email");
+    }
+    return undefined;
+}
+
 // const prepareString = (value: string): string =>{
 //     let newValue:string = value.trim();
 //     newValue = newValue.replace(/\s\s+/g, " ");
@@ -32,5 +39,6 @@ const checkPasswordValid = (value: string): string | undefined => {
 
 export {
     checkUsernameValid,
-    checkPasswordValid
+    checkPasswordValid,
+    checkEmailValid
 }

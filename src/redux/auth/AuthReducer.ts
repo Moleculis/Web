@@ -3,7 +3,8 @@ import {AUTH_FAILURE, AuthActionTypes, LOG_IN_REQUEST, LOG_IN_SUCCESS, LOGGED_OU
 export interface AuthState {
     isLoading: boolean,
     isLoggedIn?: boolean,
-    error?: string
+    error?: string,
+    message?: string
 }
 
 const initialState: AuthState = {isLoading: false};
@@ -28,13 +29,13 @@ const authReducer = (state: AuthState = initialState, action: AuthActionTypes) =
                 ...state,
                 isLoading: false,
                 isLoggedIn: true,
-                error: undefined
+                error: undefined,
             };
         case AUTH_FAILURE:
             return {
                 ...state,
                 isLoading: false,
-                error: action.error
+                error: action.error,
             };
         default:
             return state;

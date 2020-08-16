@@ -9,7 +9,7 @@ interface SnackbarPosition {
 
 export type AlertSeverityType = "error" | "warning" | "info" | "success" | undefined
 
-interface ProjectSnackbarProps {
+interface SimpleSnackbarProps {
     position?: SnackbarPosition,
     open: boolean,
     message?: string,
@@ -17,7 +17,7 @@ interface ProjectSnackbarProps {
     handleClose: () => void
 }
 
-const ProjectSnackbar = ({
+const SimpleSnackbar = ({
                              open,
                              message,
                              handleClose,
@@ -26,7 +26,7 @@ const ProjectSnackbar = ({
                                  vertical: "top",
                                  horizontal: "center"
                              },
-                         }: ProjectSnackbarProps) => {
+                         }: SimpleSnackbarProps) => {
     return (
         <>
             <Snackbar
@@ -53,4 +53,4 @@ const Alert = ({severity, children}: AlertProps) => {
     return <MuiAlert elevation={6} variant="filled" severity={severity} children={children}/>;
 }
 
-export default ProjectSnackbar;
+export default SimpleSnackbar;

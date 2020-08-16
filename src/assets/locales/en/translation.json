@@ -8,5 +8,11 @@
   "username_short": "Username is too short",
   "username_long": "Username is too long",
   "username_wrong": "Wrong username",
-  "password_short": "Password is too short"
+  "password_short": "Password is too short",
+  "reset_pass": "Reset password",
+  "email": "Email",
+  "send": "Send",
+  "loading": "Loading",
+  "wrong_email": "Wrong email",
+  "remembered_pass": "Remembered password? Log in"
 }

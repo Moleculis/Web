@@ -1,5 +1,5 @@
 import React, {createContext, useState} from "react";
-import ProjectSnackbar, {AlertSeverityType} from "./ProjectSnackbar";
+import SimpleSnackbar, {AlertSeverityType} from "./SimpleSnackbar";
 
 interface SnackbarWrapperProps {
     children: React.ReactNode
@@ -87,7 +87,7 @@ const SnackbarWrapper = ({children}: SnackbarWrapperProps) => {
 
     return (
         <>
-            <ProjectSnackbar
+            <SimpleSnackbar
                 open={isSnackbarOpened}
                 message={snackbarPayload?.snackBarMessage}
                 severity={snackbarPayload?.snackBarSeverity}
