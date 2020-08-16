@@ -13,13 +13,15 @@ const authReducer = (state: AuthState = initialState, action: AuthActionTypes) =
         case LOG_IN_REQUEST:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
+                error: undefined,
             };
         case LOGGED_OUT:
             return {
                 ...state,
                 isLoading: false,
                 isLoggedIn: false,
+                error: undefined,
             };
         case LOG_IN_SUCCESS:
             return {

@@ -1,4 +1,4 @@
-const usernameRegexp = new RegExp(String.raw`^[^A-Za-z0-9]$`);
+const usernameRegexp = new RegExp(String.raw`^[a-zA-Z0-9]+$`);
 // const emailRegexp = new RegExp(String.raw`^[a-zA-Z0-9.!#\\$%&’*+/=?^_\`{|}~-]+
 // @[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\$`);
 

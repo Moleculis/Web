@@ -7,7 +7,7 @@ interface SnackbarPosition {
     horizontal: 'center' | 'left' | 'right'
 }
 
-type AlertSeverityType = 'error' | 'warning' | 'info' | 'success'
+export type AlertSeverityType = 'error' | 'warning' | 'info' | 'success' | undefined
 
 interface ProjectSnackbarProps {
     position?: SnackbarPosition,
@@ -18,11 +18,14 @@ interface ProjectSnackbarProps {
 }
 
 const ProjectSnackbar = ({
+                             open,
+                             message,
+                             handleClose,
+                             severity,
                              position = {
                                  vertical: 'top',
                                  horizontal: 'center'
-                             }, open, message, handleClose,
-                             severity,
+                             },
                          }: ProjectSnackbarProps) => {
     return (
         <>

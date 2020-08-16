@@ -56,13 +56,16 @@ class Form extends Component<FormProps> {
             if (child.type === TextFormField) {
                 newChildren[i] = React.cloneElement(child, {
                     ...child.props, ref: (ref: TextFormField | undefined) => {
-                        if(ref){
+                        if (ref) {
                             this.textFormFieldsRefs.push(ref);
                         }
                     }
                 });
             } else if (child.props?.children) {
-                this.assignRefsToTextFormFields(child.props.children)
+                newChildren[i] = React.cloneElement(child, {
+                    ...child.props,
+                    children: this.assignRefsToTextFormFields(child.props.children),
+                });
             }
         }
         return newChildren;

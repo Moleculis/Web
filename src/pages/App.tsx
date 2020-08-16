@@ -7,6 +7,7 @@ import Home from "./Home/Home";
 import {connect} from "react-redux";
 import {silentLogIn} from "../redux/auth/AuthActions";
 import {StoreState} from "../redux/Store";
+import SnackbarWrapper from "../components/SnackbarWrapper";
 
 interface AppProps {
     isLoggedIn?: boolean,
@@ -29,7 +30,9 @@ const App = ({isLoggedIn, silentLogIn}: AppProps) => {
     ) : null;
     return (
         <div className='App'>
-            {app}
+            <SnackbarWrapper>
+                {app}
+            </SnackbarWrapper>
         </div>
     );
 }
