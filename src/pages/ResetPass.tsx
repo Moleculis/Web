@@ -16,18 +16,28 @@ import {useTranslation} from "react-i18next";
 import Routes from "./Base/Routes";
 import {useHistory, useLocation} from "react-router-dom";
 import queryString from 'query-string'
+import {checkTokenAction, TOKEN_NOT_VALID} from "../redux/auth/AuthActions";
 
 interface ResetPassProps {
-    isLoading: boolean
+    isLoading: boolean,
+    checkTokenAction: (token: string) => void
 }
 
-const ResetPass = ({isLoading}: ResetPassProps) => {
+let tokenChecked: boolean = false;
+const ResetPass = ({isLoading, checkTokenAction}: ResetPassProps) => {
     const classes = formStyles();
 
     const location = useLocation();
-    const token = queryString.parse(location.search).token;
-    console.log(`token: ${token}`);
-
+    const token: string | undefined = queryString.parse(location.search).token?.toString();
+    const history = useHistory();
+    if (!token) {
+        history.push(Routes.signIn);
+    } else {
+        if (!tokenChecked) {
+            checkTokenAction(token);
+            tokenChecked = true;
+        }
+    }
 
     const {t} = useTranslation();
 
@@ -36,7 +46,9 @@ const ResetPass = ({isLoading}: ResetPassProps) => {
 
     const {openSnackBar} = useContext(SnackbarContext);
 
-    const history = useHistory();
+    if (isLoading) {
+        return (<></>);
+    }
 
     const onSubmit = () => {
         // TODO send reset password request
@@ -48,7 +60,11 @@ const ResetPass = ({isLoading}: ResetPassProps) => {
             listener={
                 (dispatch, currentState) => {
                     if (currentState.error) {
-                        openSnackBar(currentState.error, "error");
+                        if (currentState.error === TOKEN_NOT_VALID) {
+                            history.push(Routes.signIn);
+                        } else {
+                            openSnackBar(currentState.error, "error");
+                        }
                     } else if (currentState.message) {
                         history.push(Routes.signIn, {message: currentState.message});
                     }
@@ -98,10 +114,12 @@ const ResetPass = ({isLoading}: ResetPassProps) => {
 const mapStateToProps = (state: StoreState) => {
     const authState: AuthState = state.auth;
     return {
-        isLoading: authState.isLoading
+        isLoading: authState.isLoading,
     };
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+    checkTokenAction: checkTokenAction
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPass);

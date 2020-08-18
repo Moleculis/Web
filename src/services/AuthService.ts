@@ -3,9 +3,12 @@ import {usersEndpoint} from "./BaseEndpoints";
 import {AxiosResponse} from "axios";
 import LoginResponse from "../models/responses/LoginResponse";
 import MessageResponse from "../models/responses/MessageResponse";
+import BooleanResponse from "../models/responses/BooleanResponse";
 
 const logInEndpoint: string = `${usersEndpoint}/login`;
 const sendResetPassEndpoint: string = `${usersEndpoint}/resetPass`;
+const checkTokenEndpoint: string = `${usersEndpoint}/tokenValid`;
+const resetPassEndpoint: string = `${usersEndpoint}/resetPassConfirm`;
 
 class AuthService {
     logIn = async (username: string, password: string): Promise<LoginResponse> => {
@@ -21,6 +24,24 @@ class AuthService {
                 params: {
                     email: email
                 }
+            });
+        return response.data;
+    }
+
+    checkToken = async (token: string): Promise<BooleanResponse> => {
+        const response: AxiosResponse = await axiosInstance.get(checkTokenEndpoint,
+            {
+                params: {
+                    token: token
+                }
+            });
+        return response.data;
+    }
+
+    resetPass = async (token: string, password: string): Promise<MessageResponse> => {
+        const response: AxiosResponse = await axiosInstance.post(resetPassEndpoint,
+            {
+                token, password
             });
         return response.data;
     }

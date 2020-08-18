@@ -1,11 +1,13 @@
 import {
     AUTH_FAILURE,
     AuthActionTypes,
+    CHECK_TOKEN_REQUEST,
     LOG_IN_REQUEST,
     LOG_IN_SUCCESS,
     LOGGED_OUT,
     RESET_PASS_MESSAGE_SENT,
-    RESET_PASS_REQUEST
+    RESET_PASS_REQUEST,
+    TOKEN_NOT_VALID, TOKEN_VALID
 } from "./AuthActions";
 
 export interface AuthState {
@@ -19,6 +21,7 @@ const initialState: AuthState = {isLoading: false};
 
 const authReducer = (state: AuthState = initialState, action: AuthActionTypes) => {
     switch (action.type) {
+        case CHECK_TOKEN_REQUEST:
         case RESET_PASS_REQUEST:
         case LOG_IN_REQUEST:
             return {
@@ -55,6 +58,17 @@ const authReducer = (state: AuthState = initialState, action: AuthActionTypes) =
                 isLoading: false,
                 error: action.error,
                 message: undefined
+            };
+        case TOKEN_NOT_VALID:
+            return {
+                ...state,
+                isLoading: false,
+                error: TOKEN_NOT_VALID
+            };
+        case TOKEN_VALID:
+            return {
+                ...state,
+                isLoading: false,
             };
         default:
             return state;

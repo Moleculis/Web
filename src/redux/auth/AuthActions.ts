@@ -14,6 +14,10 @@ export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const RESET_PASS_MESSAGE_SENT = "RESET_PASS_MESSAGE_SENT";
 export const AUTH_FAILURE = "AUTH_FAILURE";
 
+export const CHECK_TOKEN_REQUEST = "CHECK_TOKEN_REQUEST";
+export const TOKEN_NOT_VALID = "TOKEN_NOT_VALID";
+export const TOKEN_VALID = "TOKEN_VALID";
+
 interface SilentLogIn {
     type: typeof SILENT_LOG_IN
 }
@@ -30,6 +34,10 @@ interface ResetPassRequest {
     type: typeof RESET_PASS_REQUEST
 }
 
+interface CheckTokenRequest {
+    type: typeof CHECK_TOKEN_REQUEST
+}
+
 interface LogInSuccess {
     type: typeof LOG_IN_SUCCESS
 }
@@ -44,9 +52,18 @@ interface AuthFailure {
     error: string
 }
 
+interface TokenNotValid {
+    type: typeof TOKEN_NOT_VALID;
+}
+
+interface TokenValid {
+    type: typeof TOKEN_VALID;
+}
+
 export type AuthActionTypes = LogInRequest | LogInSuccess
     | AuthFailure | SilentLogIn | LoggedOut | ResetPassRequest
-    | ResetPassMessageSent;
+    | ResetPassMessageSent | TokenNotValid | CheckTokenRequest
+    | TokenValid;
 
 // Actions
 const logInRequest = (): AuthActionTypes => {
@@ -55,6 +72,10 @@ const logInRequest = (): AuthActionTypes => {
 
 const resetPassRequest = (): AuthActionTypes => {
     return {type: RESET_PASS_REQUEST};
+};
+
+const checkTokenRequest = (): AuthActionTypes => {
+    return {type: CHECK_TOKEN_REQUEST};
 };
 
 const logInSuccess = (): AuthActionTypes => {
@@ -71,6 +92,14 @@ const loggedOut = (): AuthActionTypes => {
 
 const authFailure = (error: string): AuthActionTypes => {
     return {type: AUTH_FAILURE, error};
+}
+
+const tokenNotValid = (): AuthActionTypes => {
+    return {type: TOKEN_NOT_VALID};
+}
+
+const tokenValid = (): AuthActionTypes => {
+    return {type: TOKEN_VALID};
 }
 
 //Action creators
@@ -117,8 +146,27 @@ const sendResetPassMailAction = (email: string)
     };
 }
 
+const checkTokenAction = (token: string)
+    : ThunkAction<void, AuthState, unknown, any> => {
+    return async dispatch => {
+        dispatch(checkTokenRequest());
+        authService.checkToken(token).then(response => {
+            const result: boolean = response.result;
+            if(result){
+                dispatch(tokenValid());
+            }else{
+                dispatch(tokenNotValid());
+            }
+        }).catch(error => {
+            const errorMessage: string = error.message;
+            dispatch(authFailure(errorMessage));
+        });
+    };
+}
+
 export {
     logInAction,
     silentLogIn,
     sendResetPassMailAction,
+    checkTokenAction
 }
