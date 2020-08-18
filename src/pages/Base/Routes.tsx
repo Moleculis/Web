@@ -8,6 +8,7 @@ import Home from "../Home";
 import SignIn from "../SignIn";
 import SignUp from "../SignUp";
 import SendResetPass from "../SendResetPass";
+import ResetPass from "../ResetPass";
 
 interface RouteProps {
     exact?: boolean,
@@ -19,12 +20,14 @@ const homeEndpoint = '/';
 const signInEndpoint = "/sign-in";
 const signUpEndpoint = "/sign-up";
 const sendResetPassEndpoint = "/send-reset-pass";
+const resetPassEndpoint = "/reset-pass";
 
 const Routes = {
     home: homeEndpoint,
     signIn: signInEndpoint,
     signUp: signUpEndpoint,
-    sendResetPass: sendResetPassEndpoint
+    sendResetPass: sendResetPassEndpoint,
+    resetPass: resetPassEndpoint,
 };
 
 export const Pages = () => {
@@ -36,6 +39,7 @@ export const Pages = () => {
                     <AuthRoute path={Routes.signIn} component={SignIn}/>
                     <AuthRoute path={Routes.signUp} component={SignUp}/>
                     <AuthRoute path={Routes.sendResetPass} component={SendResetPass}/>
+                    <AuthRoute path={Routes.resetPass} component={ResetPass}/>
                 </Switch>
             </Router>
         </>

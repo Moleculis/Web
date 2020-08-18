@@ -2,6 +2,7 @@
   "sing_in": "Sign in",
   "username": "Username",
   "password": "Password",
+  "confirm_password": "Confirm Password",
   "remember_me": "Remember me",
   "forgot_pass": "Forgot password?",
   "no_account": "Don't have an account? Sign Up",
@@ -14,5 +15,7 @@
   "send": "Send",
   "loading": "Loading",
   "wrong_email": "Wrong email",
-  "remembered_pass": "Remembered password? Log in"
+  "remembered_pass": "Remembered password? Log in",
+  "change_pass": "Change password",
+  "diff_pass": "Passwords do not match"
 }

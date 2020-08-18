@@ -16,6 +16,7 @@
     "@types/react-router-dom": "^5.1.5",
     "axios": "^0.19.2",
     "i18next": "^19.6.3",
+    "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.7.0",
