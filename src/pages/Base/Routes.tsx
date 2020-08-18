@@ -9,6 +9,7 @@ import SignIn from "../SignIn";
 import SignUp from "../SignUp";
 import SendResetPass from "../SendResetPass";
 import ResetPass from "../ResetPass";
+import RegistrationConfirm from "../RegistrationConfirm";
 
 interface RouteProps {
     exact?: boolean,
@@ -21,6 +22,7 @@ const signInEndpoint = "/sign-in";
 const signUpEndpoint = "/sign-up";
 const sendResetPassEndpoint = "/send-reset-pass";
 const resetPassEndpoint = "/reset-pass";
+const registrationConfirmEndpoint = "/registration-confirm";
 
 const Routes = {
     home: homeEndpoint,
@@ -28,6 +30,7 @@ const Routes = {
     signUp: signUpEndpoint,
     sendResetPass: sendResetPassEndpoint,
     resetPass: resetPassEndpoint,
+    registrationConfirm: registrationConfirmEndpoint
 };
 
 export const Pages = () => {
@@ -40,6 +43,7 @@ export const Pages = () => {
                     <AuthRoute path={Routes.signUp} component={SignUp}/>
                     <AuthRoute path={Routes.sendResetPass} component={SendResetPass}/>
                     <AuthRoute path={Routes.resetPass} component={ResetPass}/>
+                    <Route path={Routes.registrationConfirm} component={RegistrationConfirm}/>
                 </Switch>
             </Router>
         </>

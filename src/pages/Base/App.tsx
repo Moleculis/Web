@@ -4,6 +4,7 @@ import {silentLogIn} from "../../redux/auth/AuthActions";
 import {StoreState} from "../../redux/Store";
 import SnackbarWrapper from "../../components/Snackbar/SnackbarWrapper";
 import {Pages} from "./Routes";
+import PagePlaceholder from "../../components/PagePlaceholder";
 
 interface AppProps {
     isLoggedIn?: boolean,
@@ -17,7 +18,7 @@ const App = ({isLoggedIn, silentLogIn}: AppProps) => {
 
     const app = isLoggedIn !== undefined ? (
         <Pages/>
-    ) : null;
+    ) : <PagePlaceholder />;
     return (
         <div className="App">
             <SnackbarWrapper>

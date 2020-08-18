@@ -17,6 +17,7 @@ import Routes from "./Base/Routes";
 import {useHistory, useLocation} from "react-router-dom";
 import queryString from 'query-string'
 import {checkTokenAction, resetPassAction, TOKEN_NOT_VALID, TOKEN_VALID} from "../redux/auth/AuthActions";
+import PagePlaceholder from "../components/PagePlaceholder";
 
 interface ResetPassProps {
     isLoading: boolean,
@@ -48,7 +49,7 @@ const ResetPass = ({isLoading, checkTokenAction, resetPassAction}: ResetPassProp
     const {openSnackBar} = useContext(SnackbarContext);
 
     if (isLoading && !tokenChecked) {
-        return (<></>);
+        return (<PagePlaceholder/>);
     }
 
     const onSubmit = () => {
