@@ -5,7 +5,7 @@ import {
     LOG_IN_REQUEST,
     LOG_IN_SUCCESS,
     LOGGED_OUT,
-    RESET_PASS_MESSAGE_SENT,
+    RESET_PASS_MESSAGE,
     RESET_PASS_REQUEST,
     TOKEN_NOT_VALID, TOKEN_VALID
 } from "./AuthActions";
@@ -46,7 +46,7 @@ const authReducer = (state: AuthState = initialState, action: AuthActionTypes) =
                 error: undefined,
                 message: undefined
             };
-        case RESET_PASS_MESSAGE_SENT:
+        case RESET_PASS_MESSAGE:
             return {
                 ...state,
                 isLoading: false,
@@ -69,6 +69,7 @@ const authReducer = (state: AuthState = initialState, action: AuthActionTypes) =
             return {
                 ...state,
                 isLoading: false,
+                message: TOKEN_VALID
             };
         default:
             return state;

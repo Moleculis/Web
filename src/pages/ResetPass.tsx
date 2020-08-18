@@ -16,15 +16,16 @@ import {useTranslation} from "react-i18next";
 import Routes from "./Base/Routes";
 import {useHistory, useLocation} from "react-router-dom";
 import queryString from 'query-string'
-import {checkTokenAction, TOKEN_NOT_VALID} from "../redux/auth/AuthActions";
+import {checkTokenAction, resetPassAction, TOKEN_NOT_VALID, TOKEN_VALID} from "../redux/auth/AuthActions";
 
 interface ResetPassProps {
     isLoading: boolean,
-    checkTokenAction: (token: string) => void
+    checkTokenAction: (token: string) => void,
+    resetPassAction: (token: string, password: string) => void,
 }
 
 let tokenChecked: boolean = false;
-const ResetPass = ({isLoading, checkTokenAction}: ResetPassProps) => {
+const ResetPass = ({isLoading, checkTokenAction, resetPassAction}: ResetPassProps) => {
     const classes = formStyles();
 
     const location = useLocation();
@@ -33,9 +34,9 @@ const ResetPass = ({isLoading, checkTokenAction}: ResetPassProps) => {
     if (!token) {
         history.push(Routes.signIn);
     } else {
-        if (!tokenChecked) {
-            checkTokenAction(token);
+        if (!tokenChecked && !isLoading) {
             tokenChecked = true;
+            checkTokenAction(token);
         }
     }
 
@@ -46,12 +47,12 @@ const ResetPass = ({isLoading, checkTokenAction}: ResetPassProps) => {
 
     const {openSnackBar} = useContext(SnackbarContext);
 
-    if (isLoading) {
+    if (isLoading && !tokenChecked) {
         return (<></>);
     }
 
     const onSubmit = () => {
-        // TODO send reset password request
+        resetPassAction(token!, password2);
     }
 
     return (
@@ -66,7 +67,9 @@ const ResetPass = ({isLoading, checkTokenAction}: ResetPassProps) => {
                             openSnackBar(currentState.error, "error");
                         }
                     } else if (currentState.message) {
-                        history.push(Routes.signIn, {message: currentState.message});
+                        if (currentState.message !== TOKEN_VALID) {
+                            history.push(Routes.signIn, {message: currentState.message});
+                        }
                     }
                 }
             }>
@@ -92,7 +95,7 @@ const ResetPass = ({isLoading, checkTokenAction}: ResetPassProps) => {
                             type="password"
                             value={password2}
                             onChange={setPassword2}
-                            validation={(value: string) => {
+                            validation={(_) => {
                                 if (password1 !== password2) {
                                     return t("diff_pass");
                                 }
@@ -119,7 +122,8 @@ const mapStateToProps = (state: StoreState) => {
 }
 
 const mapDispatchToProps = {
-    checkTokenAction: checkTokenAction
+    checkTokenAction: checkTokenAction,
+    resetPassAction: resetPassAction
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResetPass);

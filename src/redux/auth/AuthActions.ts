@@ -2,6 +2,7 @@ import AuthService from "../../services/AuthService";
 import {ThunkAction} from "redux-thunk";
 import {AuthState} from "./AuthReducer";
 import {getToken, setToken} from "../../services/Storage";
+import MessageResponse from "../../models/responses/MessageResponse";
 
 const authService = new AuthService();
 
@@ -11,7 +12,7 @@ export const LOGGED_OUT = "LOGGED_OUT";
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const RESET_PASS_REQUEST = "RESET_PASS_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
-export const RESET_PASS_MESSAGE_SENT = "RESET_PASS_MESSAGE_SENT";
+export const RESET_PASS_MESSAGE = "RESET_PASS_MESSAGE_SENT";
 export const AUTH_FAILURE = "AUTH_FAILURE";
 
 export const CHECK_TOKEN_REQUEST = "CHECK_TOKEN_REQUEST";
@@ -42,8 +43,8 @@ interface LogInSuccess {
     type: typeof LOG_IN_SUCCESS
 }
 
-interface ResetPassMessageSent {
-    type: typeof RESET_PASS_MESSAGE_SENT,
+interface ResetPassMessage {
+    type: typeof RESET_PASS_MESSAGE,
     message: string
 }
 
@@ -62,7 +63,7 @@ interface TokenValid {
 
 export type AuthActionTypes = LogInRequest | LogInSuccess
     | AuthFailure | SilentLogIn | LoggedOut | ResetPassRequest
-    | ResetPassMessageSent | TokenNotValid | CheckTokenRequest
+    | ResetPassMessage | TokenNotValid | CheckTokenRequest
     | TokenValid;
 
 // Actions
@@ -82,8 +83,8 @@ const logInSuccess = (): AuthActionTypes => {
     return {type: LOG_IN_SUCCESS};
 }
 
-const resetPassMessageSent = (message: string): AuthActionTypes => {
-    return {type: RESET_PASS_MESSAGE_SENT, message};
+const resetPassMessage = (message: string): AuthActionTypes => {
+    return {type: RESET_PASS_MESSAGE, message};
 }
 
 const loggedOut = (): AuthActionTypes => {
@@ -138,7 +139,7 @@ const sendResetPassMailAction = (email: string)
         dispatch(resetPassRequest());
         authService.sendResetPassMessage(email).then(response => {
             const message: string = response.message;
-            dispatch(resetPassMessageSent(message));
+            dispatch(resetPassMessage(message));
         }).catch(error => {
             const errorMessage: string = error.message;
             dispatch(authFailure(errorMessage));
@@ -152,12 +153,27 @@ const checkTokenAction = (token: string)
         dispatch(checkTokenRequest());
         authService.checkToken(token).then(response => {
             const result: boolean = response.result;
-            if(result){
+            if (result) {
                 dispatch(tokenValid());
-            }else{
+            } else {
                 dispatch(tokenNotValid());
             }
         }).catch(error => {
+            const errorMessage: string = error.message;
+            dispatch(authFailure(errorMessage));
+        });
+    };
+}
+
+const resetPassAction = (token: string, newPassword: string)
+    : ThunkAction<void, AuthState, unknown, any> => {
+    return async dispatch => {
+        dispatch(resetPassRequest());
+        authService.resetPass(token,newPassword)
+            .then((response: MessageResponse) => {
+                dispatch(resetPassMessage(response.message));
+            })
+            .catch(error => {
             const errorMessage: string = error.message;
             dispatch(authFailure(errorMessage));
         });
@@ -168,5 +184,6 @@ export {
     logInAction,
     silentLogIn,
     sendResetPassMailAction,
-    checkTokenAction
+    checkTokenAction,
+    resetPassAction
 }
