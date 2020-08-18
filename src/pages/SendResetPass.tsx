@@ -15,12 +15,16 @@ import SubmitButton from "../components/SubmitButton";
 import {useTranslation} from "react-i18next";
 import Routes from "./Base/Routes";
 import TextLink from "../components/TextLink";
+import {sendResetPassMailAction} from "../redux/auth/AuthActions";
+import {useHistory} from 'react-router-dom';
 
 interface SendResetPassProps {
     isLoading: boolean,
+    message?: string,
+    sendResetPassMailAction: (email: string) => void
 }
 
-const SendResetPass = ({isLoading}: SendResetPassProps) => {
+const SendResetPass = ({isLoading, sendResetPassMailAction}: SendResetPassProps) => {
     const classes = formStyles();
 
     const {t} = useTranslation();
@@ -29,8 +33,10 @@ const SendResetPass = ({isLoading}: SendResetPassProps) => {
 
     const {openSnackBar} = useContext(SnackbarContext);
 
+    const history = useHistory();
+
     const onSubmit = () => {
-        // TODO send reset password request
+        sendResetPassMailAction(email);
     }
 
     return (
@@ -40,8 +46,8 @@ const SendResetPass = ({isLoading}: SendResetPassProps) => {
                 (dispatch, currentState) => {
                     if (currentState.error) {
                         openSnackBar(currentState.error, "error");
-                    } else if(currentState.message){
-                        openSnackBar(currentState.message);
+                    } else if (currentState.message) {
+                        history.push(Routes.signIn, {message: currentState.message});
                     }
                 }
             }>
@@ -76,12 +82,12 @@ const SendResetPass = ({isLoading}: SendResetPassProps) => {
 const mapStateToProps = (state: StoreState) => {
     const authState: AuthState = state.auth;
     return {
-        isLoading: authState.isLoading,
+        isLoading: authState.isLoading
     };
 }
 
 const mapDispatchToProps = {
-
+    sendResetPassMailAction: sendResetPassMailAction
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SendResetPass);
