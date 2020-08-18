@@ -23,7 +23,7 @@ interface SendResetPassProps {
     sendResetPassMailAction: (email: string) => void
 }
 
-const SendResetPass = ({isLoading, sendResetPassMailAction}: SendResetPassProps) => {
+const SendResetPassPage = ({isLoading, sendResetPassMailAction}: SendResetPassProps) => {
     const classes = formStyles();
 
     const {t} = useTranslation();
@@ -89,4 +89,4 @@ const mapDispatchToProps = {
     sendResetPassMailAction: sendResetPassMailAction
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendResetPass);
+export default connect(mapStateToProps, mapDispatchToProps)(SendResetPassPage);

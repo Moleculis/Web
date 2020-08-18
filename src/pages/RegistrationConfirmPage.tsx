@@ -6,7 +6,7 @@ import PagePlaceholder from "../components/PagePlaceholder";
 import AuthService from "../services/AuthService";
 import MessageResponse from "../models/responses/MessageResponse";
 
-const RegistrationConfirm = () => {
+const RegistrationConfirmPage = () => {
     const location = useLocation();
     const token: string | undefined = queryString.parse(location.search).token?.toString();
     const history = useHistory();
@@ -26,4 +26,4 @@ const RegistrationConfirm = () => {
     );
 }
 
-export default RegistrationConfirm;
+export default RegistrationConfirmPage;

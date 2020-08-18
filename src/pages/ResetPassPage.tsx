@@ -26,7 +26,7 @@ interface ResetPassProps {
 }
 
 let tokenChecked: boolean = false;
-const ResetPass = ({isLoading, checkTokenAction, resetPassAction}: ResetPassProps) => {
+const ResetPassPage = ({isLoading, checkTokenAction, resetPassAction}: ResetPassProps) => {
     const classes = formStyles();
 
     const location = useLocation();
@@ -127,4 +127,4 @@ const mapDispatchToProps = {
     resetPassAction: resetPassAction
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPass);
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassPage);

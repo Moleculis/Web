@@ -36,7 +36,7 @@ interface SignInState {
     isRememberMe: boolean
 }
 
-const SignIn = ({isLoading, logInAction}: SignInProps) => {
+const SignInPage = ({isLoading, logInAction}: SignInProps) => {
     const classes = formStyles();
 
     const {t} = useTranslation();
@@ -149,4 +149,4 @@ const mapDispatchToProps = {
     logInAction: logInAction
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);

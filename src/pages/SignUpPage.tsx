@@ -12,7 +12,7 @@ import formStyles from "../styles/FormStyle";
 import {Link as RouterLink} from "react-router-dom";
 import Routes from "./Base/Routes";
 
-const SignUp: React.FC = () => {
+const SignUpPage: React.FC = () => {
     const classes = formStyles();
     return (
         <Container component="main" maxWidth="xs">
@@ -98,4 +98,4 @@ const SignUp: React.FC = () => {
     );
 }
 
-export default SignUp;
+export default SignUpPage;
