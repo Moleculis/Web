@@ -18,6 +18,9 @@ import TextLink from "../components/TextLink";
 import {connect} from "react-redux";
 import Gender from "../models/enums/Gender";
 import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from "@material-ui/core";
+import {useHistory} from "react-router-dom";
+import {registerAction} from "../redux/auth/AuthActions";
+import RegistrationRequest from "../models/requests/RegistrationRequest";
 
 interface SignUpState {
     username: string,
@@ -30,10 +33,11 @@ interface SignUpState {
 }
 
 interface SignUpProps {
-    isLoading: boolean
+    isLoading: boolean,
+    registerAction: (request: RegistrationRequest) => void
 }
 
-const SignUpPage = ({isLoading}: SignUpProps) => {
+const SignUpPage = ({isLoading, registerAction}: SignUpProps) => {
     const classes = formStyles();
     const {t} = useTranslation();
 
@@ -82,8 +86,17 @@ const SignUpPage = ({isLoading}: SignUpProps) => {
         });
     }
 
+    const history = useHistory();
+
     const onSubmit = () => {
-        // TODO send register action
+        registerAction({
+            displayname: displayName,
+            fullname: fullName,
+            gender: gender,
+            username: username,
+            email: email,
+            password: password1
+        });
     }
 
     return (
@@ -93,6 +106,8 @@ const SignUpPage = ({isLoading}: SignUpProps) => {
                 (dispatch, currentState) => {
                     if (currentState.error) {
                         openSnackBar(currentState.error, "error");
+                    } else if (currentState.message) {
+                        history.push(Routes.signIn, {message: currentState.message});
                     }
                 }
             }>
@@ -183,6 +198,8 @@ const mapStateToProps = (state: StoreState) => {
     };
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+    registerAction: registerAction
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);

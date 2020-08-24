@@ -1,6 +1,6 @@
 import {t} from "../i18n";
 
-const usernameRegexp = new RegExp(/^[a-zA-Z0-9]+$/);
+const usernameRegexp = new RegExp(/^[a-zA-Z0-9_]+$/);
 const emailRegexp = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
 const checkUsernameValid = (value: string): string | undefined => {

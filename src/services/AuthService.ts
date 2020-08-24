@@ -4,11 +4,13 @@ import {AxiosResponse} from "axios";
 import LoginResponse from "../models/responses/LoginResponse";
 import MessageResponse from "../models/responses/MessageResponse";
 import BooleanResponse from "../models/responses/BooleanResponse";
+import RegistrationRequest from "../models/requests/RegistrationRequest";
 
 const logInEndpoint: string = `${usersEndpoint}/login`;
 const sendResetPassEndpoint: string = `${usersEndpoint}/resetPass`;
 const checkTokenEndpoint: string = `${usersEndpoint}/tokenValid`;
 const resetPassEndpoint: string = `${usersEndpoint}/resetPassConfirm`;
+const registrationEndpoint: string = `${usersEndpoint}/register`;
 const registrationConfirmEndpoint: string = `${usersEndpoint}/registrationConfirm`;
 
 class AuthService {
@@ -44,6 +46,11 @@ class AuthService {
             {
                 token, password
             });
+        return response.data;
+    }
+
+    register = async (request: RegistrationRequest): Promise<MessageResponse> => {
+        const response: AxiosResponse = await axiosInstance.post(registrationEndpoint, request);
         return response.data;
     }
 
