@@ -25,5 +25,6 @@
   "female": "Female",
   "value_empty": "{{fieldName}} can not be empty",
   "display_name": "Display name",
-  "full_name": "Full name"
+  "full_name": "Full name",
+  "home": "Home"
 }

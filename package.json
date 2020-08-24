@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -15,6 +16,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "axios": "^0.19.2",
+    "clsx": "^1.1.1",
     "i18next": "^19.6.3",
     "query-string": "^6.13.1",
     "react": "^16.13.1",

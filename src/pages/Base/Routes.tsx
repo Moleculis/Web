@@ -10,6 +10,7 @@ import SignUpPage from "../SignUpPage";
 import SendResetPass from "../SendResetPassPage";
 import ResetPass from "../ResetPassPage";
 import RegistrationConfirmPage from "../RegistrationConfirmPage";
+import LoggedInRouteWrapper from "./LoggedInRouteWrapper";
 
 interface RouteProps {
     exact?: boolean,
@@ -50,6 +51,7 @@ export const Pages = () => {
     );
 }
 
+
 const LoggedInRoute = ({component: Component}: RouteProps) => {
     const authState: AuthState = useSelector((state: StoreState) => state.auth);
     const history = useHistory();
@@ -59,9 +61,9 @@ const LoggedInRoute = ({component: Component}: RouteProps) => {
     return (
         <>
             <Route render={otherProps => (
-                <>
-                    <Component {...otherProps} />
-                </>
+                <LoggedInRouteWrapper>
+                    <Component {...otherProps}/>
+                </LoggedInRouteWrapper>
             )}/>
         </>
     );
