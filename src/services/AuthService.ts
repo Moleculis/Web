@@ -12,6 +12,7 @@ const checkTokenEndpoint: string = `${usersEndpoint}/tokenValid`;
 const resetPassEndpoint: string = `${usersEndpoint}/resetPassConfirm`;
 const registrationEndpoint: string = `${usersEndpoint}/register`;
 const registrationConfirmEndpoint: string = `${usersEndpoint}/registrationConfirm`;
+const logOutEndpoint: string = `${usersEndpoint}/logout`;
 
 class AuthService {
     logIn = async (username: string, password: string): Promise<LoginResponse> => {
@@ -61,6 +62,11 @@ class AuthService {
                     token: token
                 }
             });
+        return response.data;
+    }
+
+    logOut = async (): Promise<MessageResponse> => {
+        const response: AxiosResponse = await axiosInstance.post(logOutEndpoint);
         return response.data;
     }
 }

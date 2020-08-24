@@ -4,6 +4,8 @@ import {
     CHECK_TOKEN_REQUEST,
     LOG_IN_REQUEST,
     LOG_IN_SUCCESS,
+    LOG_OUT_REQUEST,
+    LOG_OUT_SUCCESS,
     LOGGED_OUT,
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
@@ -25,6 +27,7 @@ const initialState: AuthState = {isLoading: false};
 const authReducer = (state: AuthState = initialState, action: AuthActionTypes) => {
     switch (action.type) {
         case REGISTER_REQUEST:
+        case LOG_OUT_REQUEST:
         case CHECK_TOKEN_REQUEST:
         case RESET_PASS_REQUEST:
         case LOG_IN_REQUEST:
@@ -41,6 +44,14 @@ const authReducer = (state: AuthState = initialState, action: AuthActionTypes) =
                 isLoggedIn: false,
                 error: undefined,
                 message: undefined
+            };
+        case LOG_OUT_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                isLoggedIn: false,
+                error: undefined,
+                message: action.message
             };
         case LOG_IN_SUCCESS:
             return {

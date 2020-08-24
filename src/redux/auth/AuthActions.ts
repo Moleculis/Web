@@ -1,7 +1,7 @@
 import AuthService from "../../services/AuthService";
 import {ThunkAction} from "redux-thunk";
 import {AuthState} from "./AuthReducer";
-import {getToken, setToken} from "../../services/Storage";
+import {getToken, removeToken, setToken} from "../../services/Storage";
 import MessageResponse from "../../models/responses/MessageResponse";
 import RegistrationRequest from "../../models/requests/RegistrationRequest";
 
@@ -23,6 +23,9 @@ export const TOKEN_VALID = "TOKEN_VALID";
 export const REGISTER_REQUEST = "REGISTER_REQUEST";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 
+export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
+export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
+
 interface SilentLogIn {
     type: typeof SILENT_LOG_IN
 }
@@ -33,6 +36,10 @@ interface LoggedOut {
 
 interface LogInRequest {
     type: typeof LOG_IN_REQUEST
+}
+
+interface LogOutRequest {
+    type: typeof LOG_OUT_REQUEST
 }
 
 interface ResetPassRequest {
@@ -74,10 +81,16 @@ interface RegistrationSuccess {
     message: string;
 }
 
+interface LogOutSuccess {
+    type: typeof LOG_OUT_SUCCESS;
+    message: string;
+}
+
 export type AuthActionTypes = LogInRequest | LogInSuccess
     | AuthFailure | SilentLogIn | LoggedOut | ResetPassRequest
     | ResetPassMessage | TokenNotValid | CheckTokenRequest
-    | TokenValid | RegisterRequest | RegistrationSuccess;
+    | TokenValid | RegisterRequest | RegistrationSuccess
+    | LogOutRequest | LogOutSuccess;
 
 // Actions
 const logInRequest = (): AuthActionTypes => {
@@ -94,6 +107,14 @@ const checkTokenRequest = (): AuthActionTypes => {
 
 const registerRequest = (): AuthActionTypes => {
     return {type: REGISTER_REQUEST};
+};
+
+const logOutRequest = (): AuthActionTypes => {
+    return {type: LOG_OUT_REQUEST};
+};
+
+const logOutSuccess = (message: string): AuthActionTypes => {
+    return {type: LOG_OUT_SUCCESS, message};
 };
 
 const registerSuccess = (message: string): AuthActionTypes => {
@@ -143,9 +164,7 @@ const logInAction = (username: string, password: string, isRememberMe: boolean)
         dispatch(logInRequest());
         authService.logIn(username, password).then(response => {
             const token: string = response.token;
-            if (isRememberMe) {
-                setToken(token);
-            }
+            setToken(token, isRememberMe);
             dispatch(logInSuccess());
         }).catch(error => {
             const errorMessage: string = error.message;
@@ -215,11 +234,27 @@ const resetPassAction = (token: string, newPassword: string)
     };
 }
 
+const logOutAction = ()
+    : ThunkAction<void, AuthState, unknown, any> => {
+    return async dispatch => {
+        dispatch(logOutRequest());
+        authService.logOut().then(response => {
+            removeToken();
+            const message: string = response.message;
+            dispatch(logOutSuccess(message));
+        }).catch(error => {
+            const errorMessage: string = error.message;
+            dispatch(authFailure(errorMessage));
+        });
+    };
+}
+
 export {
     logInAction,
     silentLogIn,
     sendResetPassMailAction,
     checkTokenAction,
     resetPassAction,
-    registerAction
+    registerAction,
+    logOutAction
 }

@@ -3,12 +3,26 @@ import Language from "../utils/Language";
 const tokenKey = "accessToken";
 const languageKey = "language";
 
-const setToken = (token: string) => {
-    localStorage.setItem(tokenKey, token);
+const setToken = (token: string, isRememberMe: boolean) => {
+    if (isRememberMe) {
+        localStorage.setItem(tokenKey, token);
+    } else {
+        sessionStorage.setItem(tokenKey, token);
+    }
 }
 
 const getToken = (): string | null => {
-    return localStorage.getItem(tokenKey);
+    let token: string | null;
+    token = localStorage.getItem(tokenKey);
+    if (!token) {
+        token = sessionStorage.getItem(tokenKey);
+    }
+    return token;
+}
+
+const removeToken = () => {
+    localStorage.removeItem(tokenKey);
+    sessionStorage.removeItem(tokenKey);
 }
 
 const setLanguage = (language: Language) => {
@@ -28,5 +42,6 @@ export {
     setToken,
     getToken,
     setLanguage,
-    getLanguage
+    getLanguage,
+    removeToken
 }
