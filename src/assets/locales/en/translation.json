@@ -1,5 +1,7 @@
 {
   "sing_in": "Sign in",
+  "sing_un": "Sign up",
+  "sing_un_button": "Sign up",
   "username": "Username",
   "password": "Password",
   "confirm_password": "Confirm Password",
@@ -17,5 +19,11 @@
   "wrong_email": "Wrong email",
   "remembered_pass": "Remembered password? Log in",
   "change_pass": "Change password",
-  "diff_pass": "Passwords do not match"
+  "diff_pass": "Passwords do not match",
+  "gender": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "value_empty": "{{fieldName}} can not be empty",
+  "display_name": "Display name",
+  "full_name": "Full name"
 }

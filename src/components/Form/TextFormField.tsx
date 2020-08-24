@@ -1,6 +1,7 @@
 import * as React from "react";
 import TextField from "@material-ui/core/TextField";
 import {ChangeEvent, Component} from "react";
+import {checkNotEmpty} from "../../utils/Validation";
 
 interface TextFormFieldProps {
     required?: boolean,
@@ -28,8 +29,17 @@ class TextFormField extends Component<TextFormFieldProps, TextFormFieldState> {
     }
 
     validate = (): boolean => {
-        const {value, validation} = this.props;
-
+        const {value, validation, required, label} = this.props;
+        if (required) {
+            const emptyFieldMessage = checkNotEmpty(value, label);
+            if (emptyFieldMessage) {
+                this.setState({
+                    isError: true,
+                    errorMessage: emptyFieldMessage
+                });
+                return false;
+            }
+        }
         if (validation) {
             const errorMessage = validation(value);
             if (errorMessage) {

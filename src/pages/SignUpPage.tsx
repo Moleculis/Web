@@ -1,101 +1,188 @@
-import React from "react";
-import Button from "@material-ui/core/Button";
+import React, {useContext, useState} from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import formStyles from "../styles/FormStyle";
-import {Link as RouterLink} from "react-router-dom";
 import Routes from "./Base/Routes";
+import {useTranslation} from "react-i18next";
+import {SnackbarContext} from "../components/Snackbar/SnackbarWrapper";
+import StoreListener from "../redux/StoreListener";
+import {StoreState} from "../redux/Store";
+import {AuthState} from "../redux/auth/AuthReducer";
+import Form from "../components/Form/Form";
+import TextFormField from "../components/Form/TextFormField";
+import {checkEmailValid, checkPasswordValid, checkUsernameValid} from "../utils/Validation";
+import SubmitButton from "../components/SubmitButton";
+import TextLink from "../components/TextLink";
+import {connect} from "react-redux";
+import Gender from "../models/enums/Gender";
+import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup} from "@material-ui/core";
 
-const SignUpPage: React.FC = () => {
+interface SignUpState {
+    username: string,
+    password1: string,
+    password2: string,
+    email: string,
+    displayName: string,
+    fullName: string,
+    gender: Gender
+}
+
+interface SignUpProps {
+    isLoading: boolean
+}
+
+const SignUpPage = ({isLoading}: SignUpProps) => {
     const classes = formStyles();
+    const {t} = useTranslation();
+
+    const [state, setState] = useState({
+        username: "",
+        password1: "",
+        password2: "",
+        email: "",
+        displayName: "",
+        fullName: "",
+        gender: Gender.MALE
+    } as SignUpState);
+
+    const {openSnackBar} = useContext(SnackbarContext);
+
+    const {username, password1, password2, email, displayName, fullName, gender} = state;
+
+    const updateUsername = (value: string) => {
+        setState({...state, username: value});
+    }
+
+    const updatePassword1 = (value: string) => {
+        setState({...state, password1: value});
+    }
+
+    const updatePassword2 = (value: string) => {
+        setState({...state, password2: value});
+    }
+
+    const updateEmail = (value: string) => {
+        setState({...state, email: value});
+    }
+
+    const updateDisplayName = (value: string) => {
+        setState({...state, displayName: value});
+    }
+
+    const updateFullName = (value: string) => {
+        setState({...state, fullName: value});
+    }
+
+    const updateGender = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setState({
+            ...state,
+            gender: (event.target as HTMLInputElement).value as Gender,
+        });
+    }
+
+    const onSubmit = () => {
+        // TODO send register action
+    }
+
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
-                    Sign up
-                </Typography>
-                <form className={classes.formBig} noValidate>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                autoComplete="fname"
-                                name="firstName"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="firstName"
-                                label="First Name"
-                                autoFocus
-                            />
+        <StoreListener<StoreState, AuthState>
+            mapper={(state) => state.auth}
+            listener={
+                (dispatch, currentState) => {
+                    if (currentState.error) {
+                        openSnackBar(currentState.error, "error");
+                    }
+                }
+            }>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline/>
+                <div className={classes.paper}>
+                    <Typography component="h1" variant="h5">
+                        {t("sing_un")}
+                    </Typography>
+                    <Form className={classes.form} onSubmit={onSubmit}>
+                        <TextFormField
+                            required
+                            autoFocus
+                            label={t("username")}
+                            validation={checkUsernameValid}
+                            value={username}
+                            onChange={updateUsername}
+                        />
+                        <TextFormField
+                            required
+                            label={t("password")}
+                            type="password"
+                            value={password1}
+                            onChange={updatePassword1}
+                            validation={checkPasswordValid}
+                        />
+                        <TextFormField
+                            required
+                            label={t("confirm_password")}
+                            type="password"
+                            value={password2}
+                            onChange={updatePassword2}
+                            validation={() => {
+                                if (password1 !== password2) {
+                                    return t("diff_pass");
+                                }
+                                return undefined;
+                            }}
+                        />
+                        <TextFormField
+                            required
+                            label={t("email")}
+                            validation={checkEmailValid}
+                            value={email}
+                            onChange={updateEmail}
+                            type="email"
+                        />
+                        <TextFormField
+                            required
+                            label={t("display_name")}
+                            value={displayName}
+                            onChange={updateDisplayName}
+                        />
+                        <TextFormField
+                            required
+                            label={t("full_name")}
+                            value={fullName}
+                            onChange={updateFullName}
+                        />
+                        <FormControl component="fieldset" className={classes.legendBlock}>
+                            <FormLabel component="legend" className={classes.legend}>{t("gender")}</FormLabel>
+                            <RadioGroup aria-label="gender" name="gender1" value={gender} onChange={updateGender}>
+                                <FormControlLabel value={Gender.MALE} control={<Radio/>} label={t("male")}/>
+                                <FormControlLabel value={Gender.FEMALE} control={<Radio/>} label={t("female")}/>
+                            </RadioGroup>
+                        </FormControl>
+                        <SubmitButton
+                            disabled={isLoading}
+                            text={t("sing_un_button")}
+                        />
+                        <Grid container>
+                            <Grid item xs/>
+                            <Grid item>
+                                <TextLink to={Routes.signIn} text={'Already have an account? Sign in'}/>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="lname"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
-                            />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign Up
-                    </Button>
-                    <Grid container justify="flex-end">
-                        <Grid item>
-                            <Link variant="body2" component={RouterLink} to={Routes.signIn}>
-                                Already have an account? Sign in
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </form>
-            </div>
-        </Container>
+                    </Form>
+                </div>
+            </Container>
+        </StoreListener>
     );
 }
 
-export default SignUpPage;
+const mapStateToProps = (state: StoreState) => {
+    const authState: AuthState = state.auth;
+    return {
+        isLoading: authState.isLoading,
+    };
+}
+
+const mapDispatchToProps = {}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);

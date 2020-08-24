@@ -10,6 +10,7 @@ const formStyles = makeStyles((theme) => ({
     form: {
         width: "100%",
         marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(3)
     },
     formBig: {
         width: "100%",
@@ -18,6 +19,12 @@ const formStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    legend: {
+        marginBottom: theme.spacing(1)
+    },
+    legendBlock: {
+        marginTop: theme.spacing(2),
+    }
 }));
 
 export default formStyles;

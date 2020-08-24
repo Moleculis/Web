@@ -30,14 +30,22 @@ const checkEmailValid = (value: string): string | undefined => {
     return undefined;
 }
 
-// const prepareString = (value: string): string =>{
-//     let newValue:string = value.trim();
-//     newValue = newValue.replace(/\s\s+/g, " ");
-//     return newValue;
-// }
+const checkNotEmpty = (value: string, fieldName: string): string | undefined => {
+    if (removeSpaces(value) === "") {
+        return t("value_empty", {fieldName: fieldName});
+    }
+    return undefined;
+}
+
+const removeSpaces = (value: string): string => {
+    let newValue: string = value.trim();
+    newValue = newValue.replace(/\s/g, "");
+    return newValue;
+}
 
 export {
     checkUsernameValid,
     checkPasswordValid,
-    checkEmailValid
+    checkEmailValid,
+    checkNotEmpty
 }
