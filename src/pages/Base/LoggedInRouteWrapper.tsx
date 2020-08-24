@@ -14,7 +14,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import HomeIcon from '@material-ui/icons/Home';
 import {useHistory, useLocation} from "react-router-dom";
-import Routes from "./Routes";
+import Routes, {getLoggedInRouteTitle} from "./Routes";
 import {useTranslation} from "react-i18next";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LanguageDropdown from "../../components/LanguageDropdown";
@@ -48,14 +48,7 @@ const LoggedInRouteWrapper = ({children, isLoading, logOutAction}: LoggedInRoute
 
     const location = useLocation();
 
-    const currentTitle = (): string => {
-        switch (location.pathname) {
-            case Routes.home:
-                return t("home");
-            default:
-                return "";
-        }
-    }
+    const currentTitle: string = getLoggedInRouteTitle(location.pathname)
 
     const {openSnackBar} = useContext(SnackbarContext);
     const history = useHistory();
@@ -88,7 +81,7 @@ const LoggedInRouteWrapper = ({children, isLoading, logOutAction}: LoggedInRoute
                         <Typography
                             component="h1" variant="h6" color="inherit"
                             noWrap className={classes.title}>
-                            {currentTitle()}
+                            {currentTitle}
                         </Typography>
                         <LanguageDropdown iconColor="white"/>
                         <IconButton color="inherit" onClick={logOutAction} disabled={isLoading}>

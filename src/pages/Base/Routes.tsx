@@ -13,6 +13,7 @@ import RegistrationConfirmPage from "../RegistrationConfirmPage";
 import LoggedInRouteWrapper from "./LoggedInRouteWrapper";
 import {makeStyles} from "@material-ui/core/styles";
 import {createStyles, Theme} from "@material-ui/core";
+import {t} from "../../i18n";
 
 interface RouteProps {
     exact?: boolean,
@@ -35,6 +36,15 @@ const Routes = {
     resetPass: resetPassEndpoint,
     registrationConfirm: registrationConfirmEndpoint
 };
+
+export const getLoggedInRouteTitle = (path: string): string => {
+    switch (path) {
+        case Routes.home:
+            return t("home");
+        default:
+            return "";
+    }
+}
 
 export const Pages = () => {
     return (
