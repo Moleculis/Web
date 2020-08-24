@@ -1,27 +1,31 @@
 import React from "react";
-import {createStyles, FormControl, MenuItem, Select, Theme} from "@material-ui/core";
+import {createStyles, FormControl, MenuItem, Select} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {changeLanguage} from "../i18n";
 import {getLanguage} from "../services/Storage";
 import Language, {getLanguageAsset, getLanguageName} from "../utils/Language";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = (iconColor: string | undefined) => makeStyles((_) =>
     createStyles({
-        formControl: {
-            position: "fixed",
-            top: theme.spacing(1),
-            right: theme.spacing(1),
-        },
         img: {
             objectFit: "cover",
             width: 30,
             verticalAlign: "middle"
         },
+        icon: {
+            fill: iconColor,
+        },
     }),
 );
 
-const LanguageDropdown = () => {
-    const classes = useStyles();
+interface LanguageDropdownProps {
+    className?: string,
+    selectClassName?: string,
+    iconColor?: string
+}
+
+const LanguageDropdown = ({className, selectClassName, iconColor}: LanguageDropdownProps) => {
+    const classes = useStyles(iconColor)();
 
     const [currentLanguage, setCurrentLanguage] = React.useState(getLanguage());
 
@@ -34,12 +38,19 @@ const LanguageDropdown = () => {
 
     return (
         <div>
-            <FormControl variant="standard" className={classes.formControl}>
+            <FormControl variant="standard" className={className}>
                 <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
                     value={currentLanguage}
                     onChange={handleChange}
+                    className={selectClassName}
+                    inputProps={{
+                        classes: {
+                            icon: classes.icon,
+                        }
+                    }}
+                    disableUnderline
                 >
                     {Object.keys(Language).map((language: string) => {
                         return (

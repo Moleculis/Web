@@ -11,6 +11,8 @@ import SendResetPass from "../SendResetPassPage";
 import ResetPass from "../ResetPassPage";
 import RegistrationConfirmPage from "../RegistrationConfirmPage";
 import LoggedInRouteWrapper from "./LoggedInRouteWrapper";
+import {makeStyles} from "@material-ui/core/styles";
+import {createStyles, Theme} from "@material-ui/core";
 
 interface RouteProps {
     exact?: boolean,
@@ -69,12 +71,23 @@ const LoggedInRoute = ({component: Component}: RouteProps) => {
     );
 };
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        formControl: {
+            position: "fixed",
+            top: theme.spacing(1),
+            right: theme.spacing(1),
+        },
+    }),
+);
+
 const AuthRoute = ({component: Component}: RouteProps) => {
+    const classes = useStyles();
     return (
         <>
             <Route render={otherProps => (
                 <>
-                    <LanguageDropdown/>
+                    <LanguageDropdown className={classes.formControl}/>
                     <Component {...otherProps} />
                 </>
             )}/>

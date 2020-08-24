@@ -19,6 +19,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import {useHistory, useLocation} from "react-router-dom";
 import Routes from "./Routes";
 import {useTranslation} from "react-i18next";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LanguageDropdown from "../../components/LanguageDropdown";
 
 interface LoggedInRouteWrapperProps {
     children: ReactNode
@@ -140,6 +142,10 @@ const LoggedInRouteWrapper = ({children}: LoggedInRouteWrapperProps) => {
                         noWrap className={classes.title}>
                         {currentTitle()}
                     </Typography>
+                    <LanguageDropdown iconColor="white"/>
+                    <IconButton color="inherit" >
+                        <ExitToAppIcon />
+                    </IconButton>
                 </Toolbar>
             </AppBar>
             <Drawer
