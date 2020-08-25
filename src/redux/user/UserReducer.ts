@@ -1,4 +1,10 @@
-import {GET_CURRENT_USER_REQUEST, GET_CURRENT_USER_SUCCESS, USER_FAILURE, UserActionTypes} from "./UserActions";
+import {
+    GET_CURRENT_USER_REQUEST,
+    GET_CURRENT_USER_SUCCESS,
+    RESET_TO_INITIAL,
+    USER_FAILURE,
+    UserActionTypes
+} from "./UserActions";
 import User from "../../models/User";
 
 export interface UserState {
@@ -11,6 +17,8 @@ const initialState: UserState = {isLoading: false};
 
 const userReducer = (state: UserState = initialState, action: UserActionTypes) => {
     switch (action.type) {
+        case RESET_TO_INITIAL:
+            return initialState;
         case GET_CURRENT_USER_REQUEST:
             return {
                 ...state,

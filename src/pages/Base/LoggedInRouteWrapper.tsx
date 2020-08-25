@@ -1,4 +1,4 @@
-import React, {ReactNode, useContext} from "react";
+import React, {ReactNode, useContext, useEffect} from "react";
 import {
     AppBar, Container,
     CssBaseline,
@@ -27,15 +27,28 @@ import useLoggedInRouteStyles from "./styles/LoggedInRouteStyles";
 import StoreListener from "../../redux/StoreListener";
 import {SnackbarContext} from "../../components/Snackbar/SnackbarWrapper";
 import BackupIcon from '@material-ui/icons/Backup';
+import {UserState} from "../../redux/user/UserReducer";
+import Role from "../../models/enums/Role";
+import {resetToInitial} from "../../redux/user/UserActions";
+import User from "../../models/User";
 
 
 interface LoggedInRouteWrapperProps {
     children: ReactNode,
     isLoading: boolean,
-    logOutAction: () => void
+    logOutAction: () => void,
+    resetToInitial: () => void,
+    currentUserRoles?: Role[],
+    currentUser?: User
 }
 
-const LoggedInRouteWrapper = ({children, isLoading, logOutAction}: LoggedInRouteWrapperProps) => {
+let logOutMessage: string | undefined;
+
+const LoggedInRouteWrapper = ({
+                                  children, isLoading,
+                                  logOutAction, currentUserRoles,
+                                  resetToInitial, currentUser
+                              }: LoggedInRouteWrapperProps) => {
     const classes = useLoggedInRouteStyles();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
@@ -53,6 +66,12 @@ const LoggedInRouteWrapper = ({children, isLoading, logOutAction}: LoggedInRoute
 
     const {openSnackBar} = useContext(SnackbarContext);
     const history = useHistory();
+    console.log(history.location.pathname);
+    useEffect(() => {
+        if (!currentUser) {
+            history.push(Routes.signIn, {message: logOutMessage});
+        }
+    });
 
     return (
         <div className={classes.root}>
@@ -64,7 +83,8 @@ const LoggedInRouteWrapper = ({children, isLoading, logOutAction}: LoggedInRoute
                         if (authState.error) {
                             openSnackBar(authState.error, "error");
                         } else if (!authState.isLoggedIn) {
-                            history.push(Routes.signIn, {message: authState.message});
+                            logOutMessage = authState.message;
+                            resetToInitial();
                         }
                     }
                 }>
@@ -106,11 +126,16 @@ const LoggedInRouteWrapper = ({children, isLoading, logOutAction}: LoggedInRoute
                     <List>
                         <DrawerItem goToRoute={Routes.home} icon={<HomeIcon/>} text={t("home")}/>
                     </List>
-                    <Divider />
-                    <ListSubheader inset>{t("administration")}</ListSubheader>
-                    <List>
-                        <DrawerItem goToRoute={Routes.databaseBackup} icon={<BackupIcon/>} text={t("db_backup")}/>
-                    </List>
+                    <Divider/>
+                    {currentUserRoles ? currentUserRoles.includes(Role.ROLE_ADMIN) && (
+                        <>
+                            <ListSubheader inset>{t("administration")}</ListSubheader>
+                            <List>
+                                <DrawerItem goToRoute={Routes.databaseBackup} icon={<BackupIcon/>}
+                                            text={t("db_backup")}/>
+                            </List>
+                        </>
+                    ) : undefined}
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer}/>
@@ -127,13 +152,17 @@ const LoggedInRouteWrapper = ({children, isLoading, logOutAction}: LoggedInRoute
 
 const mapStateToProps = (state: StoreState) => {
     const authState: AuthState = state.auth;
+    const userState: UserState = state.user;
     return {
         isLoading: authState.isLoading,
+        currentUserRoles: userState.currentUser?.roles,
+        currentUser: userState.currentUser
     };
 }
 
 const mapDispatchToProps = {
-    logOutAction: logOutAction
+    logOutAction: logOutAction,
+    resetToInitial: resetToInitial
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoggedInRouteWrapper);

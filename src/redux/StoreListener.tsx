@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {Dispatcher, Mapper, observe, observer, Observer} from "redux-observers";
 import {Unsubscribe} from "redux-observers/types/redux";
 import {ReactReduxContext} from "react-redux";
@@ -12,6 +12,7 @@ interface StoreListenerProps<S, MS> {
 
 let stateObserver: Observer | undefined;
 let unsubscribeFromState: Unsubscribe;
+let unsubscribeFromHistory: Unsubscribe;
 
 const StoreListener = <S, MS>(props: StoreListenerProps<S, MS>) => {
     const {children, mapper, listener} = props;
@@ -19,20 +20,26 @@ const StoreListener = <S, MS>(props: StoreListenerProps<S, MS>) => {
     const {store} = useContext(ReactReduxContext);
 
     const history = useHistory();
-    if (!stateObserver) {
-        stateObserver = observer(
-            mapper,
-            listener
-        )
 
-        unsubscribeFromState = observe(store, [stateObserver]);
-
-        const unsubscribeFromHistory = history.listen(() => {
-            unsubscribeFromState();
-            stateObserver = undefined;
-            unsubscribeFromHistory();
-        });
+    const unsubscribeFromAll = () => {
+        unsubscribeFromState();
+        stateObserver = undefined;
+        unsubscribeFromHistory();
     }
+
+    useEffect(() => {
+        if (!stateObserver) {
+            stateObserver = observer(
+                mapper,
+                listener
+            )
+
+            unsubscribeFromState = observe(store, [stateObserver]);
+
+            unsubscribeFromHistory = history.listen(unsubscribeFromAll);
+        }
+        return unsubscribeFromAll;
+    }, [history, listener, mapper, store]);
 
     return (
         <>

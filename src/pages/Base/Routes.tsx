@@ -15,6 +15,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import {createStyles, Theme} from "@material-ui/core";
 import {t} from "../../i18n";
 import DatabaseBackupPage from "../DatabaseBackupPage";
+import {UserState} from "../../redux/user/UserReducer";
+import Role from "../../models/enums/Role";
 
 interface RouteProps {
     exact?: boolean,
@@ -60,10 +62,10 @@ export const Pages = () => {
             <Router>
                 <Switch>
                     <LoggedInRoute path={Routes.home} exact component={HomePage}/>
-                    <AuthRoute path={Routes.signIn} component={SignIn}/>
-                    <AuthRoute path={Routes.signUp} component={SignUpPage}/>
-                    <AuthRoute path={Routes.sendResetPass} component={SendResetPass}/>
-                    <AuthRoute path={Routes.resetPass} component={ResetPass}/>
+                    <LoggedOutRoute path={Routes.signIn} component={SignIn}/>
+                    <LoggedOutRoute path={Routes.signUp} component={SignUpPage}/>
+                    <LoggedOutRoute path={Routes.sendResetPass} component={SendResetPass}/>
+                    <LoggedOutRoute path={Routes.resetPass} component={ResetPass}/>
                     <Route path={Routes.registrationConfirm} component={RegistrationConfirmPage}/>
                     <AdministrationRoute path={Routes.databaseBackup} exact component={DatabaseBackupPage}/>
                 </Switch>
@@ -73,6 +75,16 @@ export const Pages = () => {
 }
 
 const AdministrationRoute = ({component: Component, path}: RouteProps) => {
+    const userState: UserState = useSelector((state: StoreState) => state.user);
+    const authState: AuthState = useSelector((state: StoreState) => state.auth);
+    const history = useHistory();
+    if (!userState.currentUser?.roles?.includes(Role.ROLE_ADMIN)) {
+        if (authState.isLoggedIn) {
+            history.push(Routes.home);
+        } else {
+            history.push(Routes.signIn);
+        }
+    }
     return (
         <>
             <LoggedInRoute path={path} component={Component}/>
@@ -107,7 +119,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const AuthRoute = ({component: Component}: RouteProps) => {
+const LoggedOutRoute = ({component: Component}: RouteProps) => {
     const classes = useStyles();
     return (
         <>

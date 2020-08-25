@@ -20,10 +20,15 @@ import StoreListener from "../redux/StoreListener";
 import SubmitButton from "../components/SubmitButton";
 import {useTranslation} from "react-i18next";
 import TextLink from "../components/TextLink";
+import {getCurrentUser} from "../redux/user/UserActions";
+import {UserState} from "../redux/user/UserReducer";
+import User from "../models/User";
 
 interface SignInProps {
     isLoading: boolean,
     logInAction: (username: string, password: string, isRememberMe: boolean) => void,
+    getCurrentUser: () => void,
+    currentUser?: User
 }
 
 interface SignInLocationState {
@@ -36,7 +41,7 @@ interface SignInState {
     isRememberMe: boolean
 }
 
-const SignInPage = ({isLoading, logInAction}: SignInProps) => {
+const SignInPage = ({isLoading, logInAction, getCurrentUser, currentUser}: SignInProps) => {
     const classes = formStyles();
 
     const {t} = useTranslation();
@@ -74,6 +79,8 @@ const SignInPage = ({isLoading, logInAction}: SignInProps) => {
         if (snackbarMessage) {
             openSnackBar(snackbarMessage);
             history.replace({});
+        } else if (currentUser) {
+            history.push(Routes.home);
         }
     });
 
@@ -85,7 +92,7 @@ const SignInPage = ({isLoading, logInAction}: SignInProps) => {
                     if (currentState.error) {
                         openSnackBar(currentState.error, "error");
                     } else if (currentState.isLoggedIn) {
-                        history.push(Routes.home);
+                        getCurrentUser();
                     }
                 }
             }>
@@ -140,13 +147,16 @@ const SignInPage = ({isLoading, logInAction}: SignInProps) => {
 
 const mapStateToProps = (state: StoreState) => {
     const authState: AuthState = state.auth;
+    const userState: UserState = state.user;
     return {
         isLoading: authState.isLoading,
+        currentUser: userState.currentUser
     };
 }
 
 const mapDispatchToProps = {
-    logInAction: logInAction
+    logInAction: logInAction,
+    getCurrentUser: getCurrentUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);

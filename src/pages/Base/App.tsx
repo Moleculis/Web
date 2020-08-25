@@ -18,10 +18,13 @@ interface AppProps {
 const App = ({isLoggedIn, silentLogIn, getCurrentUser, currentUser}: AppProps) => {
     useEffect(() => {
         silentLogIn();
-        getCurrentUser();
-    }, [silentLogIn, getCurrentUser]);
+        if (isLoggedIn !== undefined && isLoggedIn && !currentUser) {
+            getCurrentUser();
+        }
+    }, [silentLogIn, getCurrentUser, isLoggedIn, currentUser]);
 
-    const app = isLoggedIn !== undefined && currentUser !== undefined ? (
+    const app = isLoggedIn !== undefined &&
+    ((isLoggedIn && currentUser !== undefined) || !isLoggedIn) ? (
         <Pages/>
     ) : <PagePlaceholder/>;
     return (
