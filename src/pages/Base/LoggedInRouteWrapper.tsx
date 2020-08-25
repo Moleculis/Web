@@ -5,7 +5,7 @@ import {
     Divider,
     Drawer,
     IconButton,
-    List,
+    List, ListSubheader,
     Toolbar,
     Typography
 } from "@material-ui/core";
@@ -26,6 +26,7 @@ import {connect} from "react-redux";
 import useLoggedInRouteStyles from "./styles/LoggedInRouteStyles";
 import StoreListener from "../../redux/StoreListener";
 import {SnackbarContext} from "../../components/Snackbar/SnackbarWrapper";
+import BackupIcon from '@material-ui/icons/Backup';
 
 
 interface LoggedInRouteWrapperProps {
@@ -59,11 +60,11 @@ const LoggedInRouteWrapper = ({children, isLoading, logOutAction}: LoggedInRoute
             <StoreListener<StoreState, AuthState>
                 mapper={(state) => state.auth}
                 listener={
-                    (dispatch, currentState) => {
-                        if (currentState.error) {
-                            openSnackBar(currentState.error, "error");
-                        } else if (!currentState.isLoggedIn) {
-                            history.push(Routes.signIn, {message: currentState.message});
+                    (dispatch, authState) => {
+                        if (authState.error) {
+                            openSnackBar(authState.error, "error");
+                        } else if (!authState.isLoggedIn) {
+                            history.push(Routes.signIn, {message: authState.message});
                         }
                     }
                 }>
@@ -104,6 +105,11 @@ const LoggedInRouteWrapper = ({children, isLoading, logOutAction}: LoggedInRoute
                     <Divider/>
                     <List>
                         <DrawerItem goToRoute={Routes.home} icon={<HomeIcon/>} text={t("home")}/>
+                    </List>
+                    <Divider />
+                    <ListSubheader inset>{t("administration")}</ListSubheader>
+                    <List>
+                        <DrawerItem goToRoute={Routes.databaseBackup} icon={<BackupIcon/>} text={t("db_backup")}/>
                     </List>
                 </Drawer>
                 <main className={classes.content}>

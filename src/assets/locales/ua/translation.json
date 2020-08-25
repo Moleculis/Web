@@ -26,5 +26,7 @@
   "value_empty": "{{fieldName}} не може бути пустим",
   "display_name": "Відображуване ім’я",
   "full_name": "Повне ім'я",
-  "home": "Головна"
+  "home": "Головна",
+  "administration": "Адміністрування",
+  "db_backup": "Резервне коп. БД"
 }

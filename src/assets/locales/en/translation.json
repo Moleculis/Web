@@ -26,5 +26,7 @@
   "value_empty": "{{fieldName}} can not be empty",
   "display_name": "Display name",
   "full_name": "Full name",
-  "home": "Home"
+  "home": "Home",
+  "administration": "Administration",
+  "db_backup": "Database backup"
 }

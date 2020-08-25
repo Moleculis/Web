@@ -3,10 +3,10 @@ import {ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 import {useHistory} from "react-router-dom";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
-interface DrawerItemProps{
-    goToRoute:string,
+interface DrawerItemProps {
+    goToRoute: string,
     icon: ReactNode,
-    text:string
+    text: string
 }
 
 const useStyle = makeStyles((theme) => (
@@ -15,7 +15,7 @@ const useStyle = makeStyles((theme) => (
     }
 ));
 
-const DrawerItem = ({goToRoute,icon,text}:DrawerItemProps) => {
+const DrawerItem = ({goToRoute, icon, text}: DrawerItemProps) => {
     const classes = useStyle();
     const history = useHistory();
     const goTo = (route: string) => {
@@ -25,7 +25,7 @@ const DrawerItem = ({goToRoute,icon,text}:DrawerItemProps) => {
     return (
         <>
             <ListItem button onClick={() => goTo(goToRoute)} classes={{gutters: classes.gutters}}>
-                <ListItemIcon >
+                <ListItemIcon>
                     {icon}
                 </ListItemIcon>
                 <ListItemText primary={text}/>
