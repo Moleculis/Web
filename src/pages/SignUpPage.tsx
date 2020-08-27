@@ -13,7 +13,7 @@ import {AuthState} from "../redux/auth/AuthReducer";
 import Form from "../components/Form/Form";
 import TextFormField from "../components/Form/TextFormField";
 import {checkEmailValid, checkPasswordValid, checkUsernameValid} from "../utils/Validation";
-import SubmitButton from "../components/SubmitButton";
+import SubmitButton from "../components/buttons/SubmitButton";
 import TextLink from "../components/TextLink";
 import {connect} from "react-redux";
 import Gender from "../models/enums/Gender";

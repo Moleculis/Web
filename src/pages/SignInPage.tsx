@@ -17,7 +17,7 @@ import Form from "../components/Form/Form";
 import {checkPasswordValid, checkUsernameValid} from "../utils/Validation";
 import {SnackbarContext} from "../components/Snackbar/SnackbarWrapper";
 import StoreListener from "../redux/StoreListener";
-import SubmitButton from "../components/SubmitButton";
+import SubmitButton from "../components/buttons/SubmitButton";
 import {useTranslation} from "react-i18next";
 import TextLink from "../components/TextLink";
 import {getCurrentUser} from "../redux/user/UserActions";

@@ -73,6 +73,7 @@ const createDbBackup = (): ThunkAction<void, AdministrationState, unknown, any> 
     return dispatch => {
         dispatch(createBackupRequest());
         administrationService.createDbBackup().then(response => {
+            dispatch(loadDbBackups());
             dispatch(administrationSuccess(response.message));
         }).catch(e => {
             const errorMessage: string = e.message;

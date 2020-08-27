@@ -30,5 +30,10 @@
   "administration": "Administration",
   "db_backup": "Database backup",
   "no_backups": "No backups",
-  "db_backups": "Database backups"
+  "db_backups": "Database backups",
+  "create_backup": "Create backup",
+  "ok": "Ok",
+  "cancel": "Cancel",
+  "create_backup_title": "Are you sure you want to create another backup for the database?",
+  "create_backup_content": "Backup creation may take a long time."
 }

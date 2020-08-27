@@ -11,7 +11,7 @@ import Form from "../components/Form/Form";
 import {checkPasswordValid} from "../utils/Validation";
 import {SnackbarContext} from "../components/Snackbar/SnackbarWrapper";
 import StoreListener from "../redux/StoreListener";
-import SubmitButton from "../components/SubmitButton";
+import SubmitButton from "../components/buttons/SubmitButton";
 import {useTranslation} from "react-i18next";
 import Routes from "./Base/Routes";
 import {useHistory, useLocation} from "react-router-dom";

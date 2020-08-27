@@ -7,6 +7,7 @@ import {Pages} from "./Routes";
 import PagePlaceholder from "../../components/PagePlaceholder";
 import {getCurrentUser} from "../../redux/user/UserActions";
 import User from "../../models/User";
+import AlertDialogWrapper from "../../assets/AlertDialog/AlertDialogWrapper";
 
 interface AppProps {
     isLoggedIn?: boolean,
@@ -29,9 +30,11 @@ const App = ({isLoggedIn, silentLogIn, getCurrentUser, currentUser}: AppProps) =
     ) : <PagePlaceholder/>;
     return (
         <div className="App">
-            <SnackbarWrapper>
-                {app}
-            </SnackbarWrapper>
+            <AlertDialogWrapper>
+                <SnackbarWrapper>
+                    {app}
+                </SnackbarWrapper>
+            </AlertDialogWrapper>
         </div>
     );
 }
