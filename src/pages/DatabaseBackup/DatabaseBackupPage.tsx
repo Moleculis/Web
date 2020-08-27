@@ -47,7 +47,7 @@ const databaseBackupPageStyles = makeStyles((theme) => ({
 
 const DatabaseBackupPage = (props: DatabaseBackupPageProps) => {
     const classes = databaseBackupPageStyles();
-    const {isLoading, backups, loadDbBackups, createDbBackup} = props;
+    const {isLoading, backups, loadDbBackups, createDbBackup, restoreDbBackup} = props;
     const {t, i18n} = useTranslation();
 
     const getDateFromBackup = (backup: string): string => {
@@ -69,6 +69,19 @@ const DatabaseBackupPage = (props: DatabaseBackupPageProps) => {
                 title: t("create_backup_title"),
                 content: t("create_backup_content"),
                 onOk: createDbBackup,
+            } as AlertDialogPayload
+        );
+    }
+
+    const onBackupClicked = (backup: string) => {
+        const backupDate = getDateFromBackup(backup);
+        openAlertDialog(
+            {
+                title: t("restore_backup_title", {date: backupDate}),
+                content: t("restore_backup_content"),
+                onOk: () => {
+                    restoreDbBackup(backup);
+                }
             } as AlertDialogPayload
         );
     }
@@ -108,9 +121,12 @@ const DatabaseBackupPage = (props: DatabaseBackupPageProps) => {
                             <DividerWithMargin/>
                             {isLoading ? <LoadingComponent/> :
                                 backups && backups.length > 0 ?
-                                    backups.map((backup: string) => {
+                                    backups.reverse().map((backup: string) => {
                                         return (<DbBackupItem
                                                 key={backup}
+                                                onClick={() => {
+                                                    onBackupClicked(backup);
+                                                }}
                                                 text={getDateFromBackup(backup)}
                                                 icon={<BackupIcon/>}/>
                                         );

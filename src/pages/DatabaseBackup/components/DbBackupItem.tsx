@@ -3,13 +3,14 @@ import {ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
 
 interface DbBackupItemProps{
     icon: ReactNode,
-    text: string
+    text: string,
+    onClick: () => void
 }
 
-const DbBackupItem = ({icon, text}: DbBackupItemProps) => {
+const DbBackupItem = ({icon, text, onClick}: DbBackupItemProps) => {
     return (
         <>
-            <ListItem button>
+            <ListItem button onClick={onClick}>
                 <ListItemIcon>
                     {icon}
                 </ListItemIcon>

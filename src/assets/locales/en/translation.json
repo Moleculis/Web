@@ -35,5 +35,7 @@
   "ok": "Ok",
   "cancel": "Cancel",
   "create_backup_title": "Are you sure you want to create another backup for the database?",
-  "create_backup_content": "Backup creation may take a long time."
+  "create_backup_content": "Backup creation may take a long time.",
+  "restore_backup_title": "Are you sure you want to restore backup of {{date}}?",
+  "restore_backup_content": "Backup restoration may take a long time."
 }
