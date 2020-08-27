@@ -14,7 +14,7 @@ import LoggedInRouteWrapper from "./LoggedInRouteWrapper";
 import {makeStyles} from "@material-ui/core/styles";
 import {createStyles, Theme} from "@material-ui/core";
 import {t} from "../../i18n";
-import DatabaseBackupPage from "../DatabaseBackupPage";
+import DatabaseBackupPage from "../DatabaseBackup/DatabaseBackupPage";
 import {UserState} from "../../redux/user/UserReducer";
 import Role from "../../models/enums/Role";
 

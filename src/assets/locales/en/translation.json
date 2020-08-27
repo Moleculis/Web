@@ -28,5 +28,7 @@
   "full_name": "Full name",
   "home": "Home",
   "administration": "Administration",
-  "db_backup": "Database backup"
+  "db_backup": "Database backup",
+  "no_backups": "No backups",
+  "db_backups": "Database backups"
 }

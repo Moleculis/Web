@@ -69,7 +69,7 @@ const administrationSuccess = (message: string): AdministrationActionTypes => {
 };
 
 //Action creators
-const createBackup = (): ThunkAction<void, AdministrationState, unknown, any> => {
+const createDbBackup = (): ThunkAction<void, AdministrationState, unknown, any> => {
     return dispatch => {
         dispatch(createBackupRequest());
         administrationService.createDbBackup().then(response => {
@@ -81,7 +81,7 @@ const createBackup = (): ThunkAction<void, AdministrationState, unknown, any> =>
     }
 }
 
-const loadBackups = (): ThunkAction<void, AdministrationState, unknown, any> => {
+const loadDbBackups = (): ThunkAction<void, AdministrationState, unknown, any> => {
     return dispatch => {
         dispatch(loadBackupsRequest());
         administrationService.getDbBackups().then(response => {
@@ -93,7 +93,7 @@ const loadBackups = (): ThunkAction<void, AdministrationState, unknown, any> => 
     }
 }
 
-const restoreBackup = (backup: string): ThunkAction<void, AdministrationState, unknown, any> => {
+const restoreDbBackup = (backup: string): ThunkAction<void, AdministrationState, unknown, any> => {
     return dispatch => {
         dispatch(restoreBackupRequest());
         administrationService.restoreDbBackup(backup).then(response => {
@@ -106,7 +106,7 @@ const restoreBackup = (backup: string): ThunkAction<void, AdministrationState, u
 }
 
 export {
-    createBackup,
-    loadBackups,
-    restoreBackup
+    createDbBackup,
+    loadDbBackups,
+    restoreDbBackup
 }
