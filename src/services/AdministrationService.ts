@@ -17,7 +17,7 @@ class AdministrationService {
         return response.data;
     }
 
-    restoreDbBackups = async (backup: string): Promise<MessageResponse> => {
+    restoreDbBackup = async (backup: string): Promise<MessageResponse> => {
         const response: AxiosResponse = await axiosInstance.put(backupsEndpoint, null, {
             params: {
                 backup: backup
