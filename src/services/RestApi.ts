@@ -7,7 +7,7 @@ export interface ErrorResponse{
 }
 
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://moleculis-6y5troym7a-ey.a.run.app",
 })
 
 axiosInstance.interceptors.request.use(config => {
